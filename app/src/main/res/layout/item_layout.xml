@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="currentSearchName"
+            type="String" />
+          <variable
+              name="movie"
+              type="com.example.movierama.data.movie.MovieResult" />
+    </data>
+
+
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:background="@drawable/ripple_selector"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/main_item_layout"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="23sp"
+                    android:background="@color/navdrawer_color"
+                    android:gravity="center"
+                    android:text="@{movie.original_title}"
+                    android:textSize="14sp"
+                    tools:text="dddddddd"
+                    style="@style/caption_bold"
+
+                    android:textColor="@color/white" />
+                app:currentSearchName="@{currentSearchName}"
+                app:spannableInSearch="@{now_playing.name}"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@drawable/bottomcircled_bordered"
+                    android:gravity="center"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0">
+
+                    <ImageView
+                        android:id="@+id/image"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        app:imageUrl="@{movie.poster_path}"
+                        android:background="@drawable/ripple_selector"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:backgroundTint="@color/white"
+                        android:foregroundTint="@color/white"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                       />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+
+                        android:layout_width="90sp"
+                        android:layout_height="110sp"
+                        android:layout_centerInParent="true"
+
+                        app:layout_constraintBottom_toTopOf="@+id/image"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0"
+                        tools:layout_editor_absoluteX="0dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/release_date"
+                        android:paddingHorizontal="5dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:textColor="@color/white"
+                        tools:text="12-3-2021"
+                        android:background="@drawable/circled_bordered"
+                        android:text="@{movie.release_date}" />
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/circled_bordered"
+                        android:clipToPadding="false"
+                        android:elevation="30dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="2dp">
+
+                        <ImageView
+                            android:id="@+id/star"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="im"
+                            android:src="@drawable/star" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:id="@+id/rate_average"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_toEndOf="@+id/star"
+                            android:text="@{Double.toString(movie.vote_average)}"
+                            android:textColor="@android:color/white"
+                            tools:text="9.4" />
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
