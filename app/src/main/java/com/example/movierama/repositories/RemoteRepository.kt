@@ -7,7 +7,7 @@ import retrofit2.Response
 class RemoteRepository(private val my_Api: ApiClient) {
 
 
-    suspend fun searchTvShows(page:Int,query:String): Movie {
+    suspend fun searchTvShows(page:Int,query:String): Response<Movie> {
         return my_Api.searchTvShow("en_US",page.toString(),query)
     }
 

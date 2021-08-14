@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movierama.MainActivity
 import com.example.movierama.R
@@ -58,28 +59,28 @@ class SearchFragment : Fragment(),ItemHandler {
         recyclerview_search.setHasFixedSize(true)
         itemHandler=this
 
-        val adapter = PagedItemAdapter(requireContext(),itemHandler)
+        val adapter = PagedItemAdapter(requireContext(),itemHandler,viewModel = viewModel)
         recyclerview_search.adapter = adapter
-        viewModel.reserfactory()
+        viewModel.createFactory()
 
         ShowsDataSource.firstResults = {
             if(it == 0 && searcheditText.text!!.isNotEmpty()){
                 putPlaceholders(SearchResult.NO_RESULT, adapter, "")
-
             }
         }
+       // var list=PagedList<>()
+       // adapter.submitList(paged)
         viewModel.itemPagedList?.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
             }
-
         })
 
         searcheditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 if (!TextUtils.isEmpty(s.toString())) {
                     adapter.setQuery(s.toString())
-                    viewModel.searchTvShows1(s.toString().trim())
+                    viewModel.searchTvShows(s.toString().trim())
                     adapter.currentList?.dataSource?.invalidate()
                     putPlaceholders(SearchResult.HAS_RESULT, adapter, s.toString())
                 } else {
@@ -133,4 +134,8 @@ class SearchFragment : Fragment(),ItemHandler {
     override fun onLikeClicked(id: String) {
         TODO("Not yet implemented")
     }
+
+
+
+
 }

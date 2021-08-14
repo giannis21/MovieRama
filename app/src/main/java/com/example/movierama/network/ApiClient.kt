@@ -2,6 +2,7 @@ package com.example.movierama
 
 import com.example.movierama.data.movie.Movie
 import com.example.movierama.data.movieDetail.Detail_Movie
+import com.example.movierama.utils.Constants
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -19,7 +20,7 @@ interface ApiClient {
     suspend fun getMostPopular(@Query("language") lang:String="en-US", @Query("page") page:String) : Response<Movie>
 
     @GET("search/movie")
-    suspend fun searchTvShow(@Query("language") lang: String="en-US", @Query("page") page:String ,@Query("query") query: String): Movie
+    suspend fun searchTvShow(@Query("language") lang: String="en-US", @Query("page") page:String ,@Query("query") query: String): Response<Movie>
 
     @GET("tv/{movie_id}")
     suspend fun getTvShowDetails(@Path("movie_id") id:String, @Query("language") lang: String="en-US" ): Detail_Movie
@@ -35,7 +36,7 @@ interface ApiClient {
         operator fun invoke(networkConnectionIncterceptor: NetworkConnectionIncterceptor): ApiClient {
             val interceptor = Interceptor { chain ->
                 val url = chain.request().url.newBuilder()
-                    .addQueryParameter("api_key", "30842f7c80f80bb3ad8a2fb98195544d").build()
+                    .addQueryParameter("api_key", Constants.API_KEY).build()
                 val request = chain.request()
                     .newBuilder()
                     .url(url)
@@ -52,14 +53,13 @@ interface ApiClient {
                 .addInterceptor(logging)
 
             return Retrofit.Builder().client(okHttpClient1.build())
-                .baseUrl("https://api.themoviedb.org/3/")
+                .baseUrl(Constants.BASEURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(ApiClient::class.java)
         }
     }
 
-    // https://api.themoviedb.org/3/genre/movie/list?api_key=e7f37ba18b2263f1980dfdd25171d0c2&language=en-US
 
 
 }

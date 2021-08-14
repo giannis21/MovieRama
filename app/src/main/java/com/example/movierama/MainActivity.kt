@@ -14,9 +14,10 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import com.example.movierama.ui.PopularFragment
 import com.example.movierama.viewmodels.SharedViewModel
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,16 +27,14 @@ class MainActivity : AppCompatActivity() {
     lateinit var viewModel: SharedViewModel
     private lateinit var viewModelFactory: ViewModelFactory
     var searchcontainerOpened = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
         setStatusBarColor()
         setGlobalActionListeners()
-//        searchHere.setOnClickListener {
-//            linearbtns.visibility=View.INVISIBLE
-//            text_input_layout.visibility=View.VISIBLE
-//            searchHereEdittext.isEnabled = true
-//        }
+
         searchImg.setOnClickListener {
             findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_searchFragment)
         }
@@ -47,54 +46,57 @@ class MainActivity : AppCompatActivity() {
 //                else -> appBarTxt.text="Search Movie"
 //            }
 //        }
+        text_input_layout.editText?.doOnTextChanged { text, start, before, count ->
+            viewModel.searchedText.postValue(text.toString())
+        }
 
         val networkConnectionIncterceptor = this.applicationContext?.let { NetworkConnectionIncterceptor(it) }
         val webService = ApiClient(networkConnectionIncterceptor!!)
         val repository = RemoteRepository(webService)
 
 
-        viewModelFactory = ViewModelFactory(repository, this)
+
+        viewModelFactory = ViewModelFactory(repository,this)
         viewModel = ViewModelProvider(this, viewModelFactory).get(SharedViewModel::class.java)
 
-//        searchImg.setOnClickListener {
-//            if (searchcontainerOpened)
-//                moveMainContainer("up")
-//            else
-//                moveMainContainer("down")
-//        }
+        searchImg.setOnClickListener {
+            if (searchcontainerOpened)
+                moveMainContainer("up")
+            else
+                moveMainContainer("down")
+        }
     }
 
-//    private fun moveMainContainer(s: String) {
-//        if (s == "down") {
-//
-//            Handler(Looper.getMainLooper()).postDelayed({
-//                searchcontainer.animate().alpha(1.0f)
-//                linearbtns.visibility=View.VISIBLE
-//            }, 500)
-//
-//
-//            ObjectAnimator.ofFloat(nav_host_fragment, "translationY",  searchcontainer.y).apply {
-//                duration = 600
-//                addStateListener()
-//                start()
-//                searchcontainerOpened = true
-//            }
-//
-//        } else {
-//            searchcontainer.alpha = 0f
-//            linearbtns.visibility=View.INVISIBLE
-//            text_input_layout.visibility=View.INVISIBLE
-//
-//            ObjectAnimator.ofFloat(nav_host_fragment, "translationY",  0f).apply {
-//                duration = 600
-//                addStateListener()
-//                start()
-//                searchcontainerOpened = false
-//            }
-//            searchHereEdittext.isEnabled = false
-//        }
-//
-//    }
+    private fun moveMainContainer(s: String) {
+        if (s == "down") {
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                text_input_layout.visibility=View.VISIBLE
+                text_input_layout.animate().alpha(1.0f)
+            }, 500)
+
+
+            ObjectAnimator.ofFloat(nav_host_fragment, "translationY",  text_input_layout.y+8f).apply {
+                duration = 600
+                addStateListener()
+                start()
+                searchcontainerOpened = true
+            }
+            searchHereEdittext.isEnabled = true
+
+        } else {
+            text_input_layout.animate().alpha(0.0f)
+            text_input_layout.visibility=View.GONE
+            ObjectAnimator.ofFloat(nav_host_fragment, "translationY",  0f).apply {
+                duration = 600
+                addStateListener()
+                start()
+                searchcontainerOpened = false
+            }
+            searchHereEdittext.isEnabled = false
+        }
+
+    }
     private fun ObjectAnimator.addStateListener() {
         addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationStart(animation: Animator?) {

@@ -3,12 +3,11 @@ package com.example.movierama
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.movierama.RemoteRepository
 import com.example.movierama.viewmodels.SharedViewModel
 
 
 @Suppress("UNCHECKED_CAST")
-class ViewModelFactory(private val remoteRepository: RemoteRepository, var context: Context) : ViewModelProvider.Factory{
+class ViewModelFactory(val remoteRepository: RemoteRepository ,var context: Context) : ViewModelProvider.Factory{
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {

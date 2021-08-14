@@ -4,28 +4,24 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-
+import com.example.movierama.utils.NoInternetException
 
 
 object netMethods {
 
     //var listener: InternetCallback? = null
 
-    fun hasInternet(applicationContext: Context, return_boolean_state:Boolean) {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (!isInternetAvailable1(applicationContext)) {
-                //  listener?.hasInternet(false)
-                if (!return_boolean_state)
-                // throw NoInternetException("No internet connection")
-                else{}
+    fun hasInternet(applicationContext: Context) {
 
+            if (!isInternetAvailable(applicationContext)) {
+                  throw NoInternetException("No internet connection")
             }
-        }
+
     }
 
 
 
-    fun isInternetAvailable1(applicationContext: Context): Boolean {
+    fun isInternetAvailable(applicationContext: Context): Boolean {
         var result = false
         val connectivityManager = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
 
