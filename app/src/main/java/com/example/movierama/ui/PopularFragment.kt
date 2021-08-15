@@ -12,27 +12,27 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movierama.MainActivity
 import com.example.movierama.R
+import com.example.movierama.databinding.FragmentDetailsBinding
+import com.example.movierama.databinding.PopularFragmentBinding
 import com.example.movierama.viewmodels.SharedViewModel
 import com.example.tvshows.tvshows.ui.adapters.paging.PagedItemAdapter
-import kotlinx.android.synthetic.main.popular_fragment.*
 
 class PopularFragment : Fragment(), ItemHandler {
 
-    companion object {
-        fun newInstance() = PopularFragment()
-        var itemHandler: ItemHandler? = null
-        var searchListener: ((String) -> (Unit))? = null
-    }
 
+    var itemHandler: ItemHandler? = null
     private lateinit var viewModel: SharedViewModel
     lateinit var manager: LinearLayoutManager
     lateinit var adapter: PagedItemAdapter
+    lateinit var binding: PopularFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.popular_fragment, container, false)
+        binding = PopularFragmentBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = this
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,32 +41,29 @@ class PopularFragment : Fragment(), ItemHandler {
         viewModel = (activity as MainActivity).viewModel
 
         manager = LinearLayoutManager(this.context)
-        recyclerview_popular.layoutManager = manager
-        recyclerview_popular.setHasFixedSize(true)
+        binding.recyclerviewPopular.layoutManager = manager
+        binding.recyclerviewPopular.setHasFixedSize(true)
         itemHandler = this
 
 
         adapter = PagedItemAdapter(requireContext(), itemHandler, viewModel = viewModel)
-        recyclerview_popular.adapter = adapter
+        binding.recyclerviewPopular.adapter = adapter
 
         MainActivity.internetExceptionListener ={
-            no_internet_message.visibility=View.VISIBLE
+            binding.noInternetMessage.visibility=View.VISIBLE
         }
 
         observeViewmodel()
-        swipeRefreshLayout.setOnRefreshListener {
-            // do not change chips
-            // remove chips and build new
-
+        binding.swipeRefreshLayout.setOnRefreshListener {
 
             viewModel.itemPagedList?.value?.dataSource?.invalidate()
             Handler(Looper.getMainLooper()).postDelayed({
                 try {
-                    swipeRefreshLayout.isRefreshing = false
+                    binding.swipeRefreshLayout.isRefreshing = false
                 } catch (e: Exception) {
                     println(e)
                 }
-            }, 1500)
+            }, 1000)
         }
     }
 

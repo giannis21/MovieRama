@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
     tools:context=".ui.show_details.ShowDetailsFragment">
@@ -30,422 +29,422 @@
         android:layout_marginBottom="16dp"
         android:layout_height="match_parent">
 
-        <ScrollView
-            android:id="@+id/ScrollView"
-            android:layout_width="match_parent"
+<!--        <ScrollView-->
+<!--            android:id="@+id/ScrollView"-->
+<!--            android:layout_width="match_parent"-->
 
-            android:layout_height="match_parent"
-            android:scrollbarThumbVertical="@drawable/scrollbar_style">
+<!--            android:layout_height="match_parent"-->
+<!--            android:scrollbarThumbVertical="@drawable/scrollbar_style">-->
 
-            <LinearLayout
-                android:id="@+id/linear"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="218dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/ripple_selector"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/linear"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical">-->
 
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/secCard"
-                        android:layout_width="133dp"
-                        android:layout_height="178dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="28dp"
-                        android:backgroundTint="#00000000"
-                        android:paddingStart="2dp"
-                        android:paddingTop="8dp"
-                        android:paddingEnd="2dp"
-                        android:paddingBottom="8dp"
-                        app:cardCornerRadius="15dp"
-                        app:cardElevation="0dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <ProgressBar
-                            android:id="@+id/progressBar_"
-                            android:layout_width="172dp"
-                            android:layout_height="79dp"
-                            android:layout_centerVertical="true"
-                            android:layout_gravity="center"
-                            android:indeterminateTint="@color/colorPrimary" />
-
-                        <ImageView
-                            android:id="@+id/imageView2"
-                            android:layout_width="130dp"
-                            android:layout_height="174dp"
-                            android:contentDescription="image"
-                            android:scaleType="fitXY"
-                            app:imageDetails="@{movieDetails.poster_path}"
-                            app:progressBar_details="@{progressBar}" />
-
-                    </com.google.android.material.card.MaterialCardView>
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="218dp"-->
+<!--                    android:layout_marginEnd="8dp"-->
+<!--                    android:background="@drawable/ripple_selector"-->
+<!--                    android:clickable="true"-->
+<!--                    android:focusable="true"-->
+<!--                    android:foreground="?android:attr/selectableItemBackground">-->
 
 
+<!--                    <com.google.android.material.card.MaterialCardView-->
+<!--                        android:id="@+id/secCard"-->
+<!--                        android:layout_width="133dp"-->
+<!--                        android:layout_height="178dp"-->
+<!--                        android:layout_marginStart="16dp"-->
+<!--                        android:layout_marginTop="28dp"-->
+<!--                        android:backgroundTint="#00000000"-->
+<!--                        android:paddingStart="2dp"-->
+<!--                        android:paddingTop="8dp"-->
+<!--                        android:paddingEnd="2dp"-->
+<!--                        android:paddingBottom="8dp"-->
+<!--                        app:cardCornerRadius="15dp"-->
+<!--                        app:cardElevation="0dp"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent">-->
+
+<!--                        <ProgressBar-->
+<!--                            android:id="@+id/progressBar_"-->
+<!--                            android:layout_width="172dp"-->
+<!--                            android:layout_height="79dp"-->
+<!--                            android:layout_centerVertical="true"-->
+<!--                            android:layout_gravity="center"-->
+<!--                            android:indeterminateTint="@color/colorPrimary" />-->
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/imageView2"-->
+<!--                            android:layout_width="130dp"-->
+<!--                            android:layout_height="174dp"-->
+<!--                            android:contentDescription="image"-->
+<!--                            android:scaleType="fitXY"-->
+<!--                            app:imageDetails="@{movieDetails.poster_path}"-->
+<!--                            app:progressBar_details="@{progressBar}" />-->
+
+<!--                    </com.google.android.material.card.MaterialCardView>-->
 
 
 
-                </RelativeLayout>
+
+
+<!--                </RelativeLayout>-->
 
 
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="4dp"
-                    android:layout_height="match_parent">
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_marginTop="4dp"-->
+<!--                    android:layout_height="match_parent">-->
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/ripple_selector"
-                        android:clickable="true"
+<!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:background="@drawable/ripple_selector"-->
+<!--                        android:clickable="true"-->
 
-                        android:focusable="true"
-                        android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginEnd="6dp">
+<!--                        android:focusable="true"-->
+<!--                        android:foreground="?android:attr/selectableItemBackgroundBorderless"-->
+<!--                        android:layout_marginStart="6dp"-->
+<!--                        android:layout_marginEnd="6dp">-->
 
-                        <TextView
-                            android:id="@+id/episode_title"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-
-
-                            android:background="@color/colorPrimary"
-                            android:padding="3dp"
-                            android:text="@string/episode_s_title"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="15sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/title_de2tails"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bottomcircled_bordered_details"
-                            android:padding="3dp"
-                            android:textColor="@color/white"
-                            android:textSize="15sp"
-                            app:Stringifnull="@{viewmodel.details.next_episode_to_air.name}"
-                            app:layout_constraintTop_toBottomOf="@+id/episode_title"
-                            tools:layout_editor_absoluteX="0dp" />
-
-                        <TextView
-                            android:id="@+id/episode_overview"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-
-                            android:layout_marginTop="10dp"
-                            android:background="@color/colorPrimary"
-                            android:padding="3dp"
-                            android:text="@string/episodes_overview"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="15sp"
-                            app:layout_constraintTop_toBottomOf="@+id/title_de2tails"
-                            tools:layout_editor_absoluteX="1dp" />
-
-                        <TextView
-                            android:id="@+id/title_de2tail2s"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bottomcircled_bordered_details"
-                            android:padding="3dp"
-                            android:textColor="@color/white"
-                            android:textSize="15sp"
-                            app:Stringifnull="@{viewmodel.details.next_episode_to_air.overview}"
-                            app:layout_constraintTop_toBottomOf="@+id/episode_overview"
-                            tools:layout_editor_absoluteX="54dp" />
-
-                        <TextView
-                            android:id="@+id/tvShowdetails"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="30dp"
-                            android:background="@drawable/circled_bordered_smaller_radius"
-                            android:gravity="center"
-                            android:padding="3dp"
-                            android:text="@string/tv_show_details"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            app:layout_constraintTop_toBottomOf="@id/title_de2tail2s"
-                            tools:layout_editor_absoluteX="0dp" />
-
-                        <TextView
-                            android:id="@+id/original_title"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:background="@color/colorPrimary"
-                            android:padding="3dp"
-                            android:text="@string/original_title"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="15sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tvShowdetails" />
-
-                        <TextView
-                            android:id="@+id/titleTv"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bottomcircled_bordered_details"
-                            android:padding="3dp"
-                            android:textColor="@color/white"
-                            android:textSize="15sp"
-                            app:Stringifnull="@{viewmodel.details.original_name}"
-                            app:layout_constraintTop_toBottomOf="@+id/original_title"
-                            tools:layout_editor_absoluteX="0dp" />
-
-                        <TextView
-                            android:id="@+id/original_overview"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="28dp"
-                            android:background="@color/colorPrimary"
-                            android:padding="3dp"
-                            android:text="@string/overview"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="15sp"
-                            app:layout_constraintBottom_toTopOf="@+id/TvOverview"
-                            app:layout_constraintTop_toBottomOf="@+id/titleTv"
-                            app:layout_constraintVertical_bias="0.0"
-                            tools:layout_editor_absoluteX="0dp" />
-
-                        <TextView
-                            android:id="@+id/TvOverview"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bottomcircled_bordered_details"
-                            android:padding="3dp"
-                            android:textColor="@color/white"
-                            android:textSize="15sp"
-                            app:Stringifnull="@{viewmodel.details.overview}"
-                            app:layout_constraintTop_toBottomOf="@id/original_overview"
-                            tools:layout_editor_absoluteX="0dp"
-                            tools:layout_editor_absoluteY="380dp" />
-
-                        <TextView
-                            android:id="@+id/genrestitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="28dp"
-                            android:background="@color/colorPrimary"
-                            android:padding="3dp"
-                            android:text="@string/genres"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="15sp"
-                            app:layout_constraintTop_toBottomOf="@+id/TvOverview"
-                            app:layout_constraintVertical_bias="0.0"
-                            tools:layout_editor_absoluteX="0dp" />
-
-                        <TextView
-                            android:id="@+id/genres"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bottomcircled_bordered_details"
-                            android:padding="3dp"
-                            android:textColor="@color/white"
-                            android:textSize="15sp"
-                            app:genres="@{viewmodel.details.genres}"
-                            app:layout_constraintTop_toBottomOf="@id/genrestitle"
-                            tools:layout_editor_absoluteX="0dp"
-                            tools:layout_editor_absoluteY="380dp"
-                            tools:text="Action|Adventure" />
-
-                        <GridLayout
-                            android:id="@+id/grid"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="28dp"
-                            android:columnCount="2"
-                            android:rowCount="2"
-                            app:layout_constraintTop_toBottomOf="@id/genres">
-
-                            <TextView
-                                android:id="@+id/totalvotes"
-                                android:layout_row="0"
-                                android:layout_rowWeight="1"
-                                android:layout_column="0"
-                                android:layout_columnWeight="1"
-                                android:layout_marginEnd="3dp"
-                                android:background="@color/colorPrimary"
-                                android:padding="3dp"
-                                android:text="@string/tv_show_votes"
-                                android:textColor="@color/textColorPrimary"
-                                android:textSize="15sp"/>
-
-                            <TextView
-                                android:id="@+id/totalvotes_"
-                                android:layout_row="1"
-                                android:layout_rowWeight="1"
-                                android:layout_column="0"
-                                android:layout_columnWeight="1"
-                                android:layout_marginEnd="3dp"
-                                android:background="@drawable/bottomcircled_bordered_details"
-                                android:padding="3dp"
-                                android:text='@{Integer.toString(viewmodel.details.vote_count).equals("0") ? `-` : Integer.toString(viewmodel.details.vote_count) }'
-                                android:textColor="@color/white"
-                                android:textSize="15sp"
-                                app:layout_constraintTop_toBottomOf="@id/totalvotes"
-                                tools:text="1229" />
-                            <!--                        android:text='@{Double.toString(viewmodel.details.vote_average).equals("0.0") ? "-" :Double.toString(viewmodel.details.vote_average) }'-->
-                            <TextView
-                                android:id="@+id/totalrate"
-                                android:layout_row="0"
-                                android:layout_rowWeight="1"
-                                android:layout_column="1"
-                                android:layout_columnWeight="1"
-                                android:background="@color/colorPrimary"
-                                android:padding="3dp"
-                                android:text="@string/tv_show_rate"
-                                android:textColor="@color/textColorPrimary"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:id="@+id/totalrate_"
-                                android:layout_row="1"
-                                android:layout_rowWeight="1"
-                                android:layout_column="1"
-                                android:layout_columnWeight="1"
-                                android:background="@drawable/bottomcircled_bordered_details"
-                                android:padding="3dp"
-                                android:text='@{Double.toString(viewmodel.details.vote_average).equals("0") || Double.toString(viewmodel.details.vote_average).equals("0.0") ? `-` : Double.toString(viewmodel.details.vote_average) }'
-                                android:textColor="@color/white"
-                                android:textSize="15sp"
-                                app:layout_constraintTop_toBottomOf="@id/totalrate"
-                                tools:text="9.2" />
-
-                        </GridLayout>
-
-                        <TextView
-                            android:id="@+id/creator"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="28dp"
-                            android:background="@color/colorPrimary"
-                            android:padding="3dp"
-                            android:text="@string/created_by"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="15sp"
-                            app:layout_constraintTop_toBottomOf="@+id/grid"
-                            app:layout_constraintVertical_bias="0.0"
-                            tools:layout_editor_absoluteX="0dp" />
-
-                        <TextView
-                            android:id="@+id/createdBy"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bottomcircled_bordered_details"
-                            android:padding="3dp"
-                            android:textColor="@color/white"
-                            android:textSize="15sp"
-                            app:createdBy="@{viewmodel.details.created_by}"
-                            app:layout_constraintTop_toBottomOf="@id/creator"
-                            tools:layout_editor_absoluteX="0dp"
-                            tools:layout_editor_absoluteY="380dp"
-                            tools:text="Mitch | John" />
-
-                        <TextView
-                            android:id="@+id/homepage"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="28dp"
-                            android:background="@color/colorPrimary"
-
-                            android:padding="3dp"
-                            android:text="@string/homepage"
-
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="15sp"
-
-                            app:layout_constraintTop_toBottomOf="@+id/createdBy"
-                            app:layout_constraintVertical_bias="0.0"
-                            tools:layout_editor_absoluteX="0dp" />
-
-                        <ImageView
-                            android:id="@+id/hompeageImage"
-                            android:layout_width="match_parent"
-                            android:layout_height="97dp"
-                            android:background="@drawable/bottomcircled_bordered_details"
-                            android:onClick="@{()->viewmodel.addUrl(viewmodel.details.homepage)}"
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp"
-                            android:src="@drawable/coding"
-                            app:layout_constraintTop_toBottomOf="@+id/homepage" />
-
-                        <TextView
-                            android:id="@+id/seasons"
-                            android:paddingVertical="10dp"
-                            android:paddingHorizontal="5dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="30dp"
-                            android:background="@drawable/circled_bordered_smaller_radius"
-                            android:clickable="true"
-                            android:drawableEnd="@drawable/arrow_up_details"
-                            android:focusable="true"
-                            android:onClick="@{()->viewmodel.seasonClicked(NestedScrollView,seasons,ScrollView)}"
-                            android:foreground="?android:attr/selectableItemBackground"
-                            android:gravity="center"
-                            android:padding="3dp"
-                            android:text="@string/show_seasons"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            app:layout_constraintTop_toBottomOf="@id/hompeageImage"
-                            tools:layout_editor_absoluteX="0dp" />
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/seasons">
+<!--                        <TextView-->
+<!--                            android:id="@+id/episode_title"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
 
 
-                            <androidx.core.widget.NestedScrollView
+<!--                            android:background="@color/colorPrimary"-->
+<!--                            android:padding="3dp"-->
+<!--                            android:text="@string/episode_s_title"-->
+<!--                            android:textColor="@color/textColorPrimary"-->
+<!--                            android:textSize="15sp"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintTop_toTopOf="parent" />-->
 
-                                android:id="@+id/NestedScrollView"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:scrollbarThumbVertical="@drawable/scrollbar_style"
-                                android:scrollbars="vertical"
-                                android:visibility="gone"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
+<!--                        <TextView-->
+<!--                            android:id="@+id/title_de2tails"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:background="@drawable/bottomcircled_bordered_details"-->
+<!--                            android:padding="3dp"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="15sp"-->
+<!--                            app:Stringifnull="@{viewmodel.details.next_episode_to_air.name}"-->
+<!--                            app:layout_constraintTop_toBottomOf="@+id/episode_title"-->
+<!--                            tools:layout_editor_absoluteX="0dp" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/episode_overview"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+
+<!--                            android:layout_marginTop="10dp"-->
+<!--                            android:background="@color/colorPrimary"-->
+<!--                            android:padding="3dp"-->
+<!--                            android:text="@string/episodes_overview"-->
+<!--                            android:textColor="@color/textColorPrimary"-->
+<!--                            android:textSize="15sp"-->
+<!--                            app:layout_constraintTop_toBottomOf="@+id/title_de2tails"-->
+<!--                            tools:layout_editor_absoluteX="1dp" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/title_de2tail2s"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:background="@drawable/bottomcircled_bordered_details"-->
+<!--                            android:padding="3dp"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="15sp"-->
+<!--                            app:Stringifnull="@{viewmodel.details.next_episode_to_air.overview}"-->
+<!--                            app:layout_constraintTop_toBottomOf="@+id/episode_overview"-->
+<!--                            tools:layout_editor_absoluteX="54dp" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/tvShowdetails"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="30dp"-->
+<!--                            android:background="@drawable/circled_bordered_smaller_radius"-->
+<!--                            android:gravity="center"-->
+<!--                            android:padding="3dp"-->
+<!--                            android:text="@string/tv_show_details"-->
+<!--                            android:textColor="@color/textColorPrimary"-->
+<!--                            android:textSize="20sp"-->
+<!--                            android:textStyle="bold"-->
+<!--                            app:layout_constraintTop_toBottomOf="@id/title_de2tail2s"-->
+<!--                            tools:layout_editor_absoluteX="0dp" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/original_title"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="10dp"-->
+<!--                            android:background="@color/colorPrimary"-->
+<!--                            android:padding="3dp"-->
+<!--                            android:text="@string/original_title"-->
+<!--                            android:textColor="@color/textColorPrimary"-->
+<!--                            android:textSize="15sp"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintHorizontal_bias="0.0"-->
+<!--                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                            app:layout_constraintTop_toBottomOf="@+id/tvShowdetails" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/titleTv"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:background="@drawable/bottomcircled_bordered_details"-->
+<!--                            android:padding="3dp"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="15sp"-->
+<!--                            app:Stringifnull="@{viewmodel.details.original_name}"-->
+<!--                            app:layout_constraintTop_toBottomOf="@+id/original_title"-->
+<!--                            tools:layout_editor_absoluteX="0dp" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/original_overview"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="28dp"-->
+<!--                            android:background="@color/colorPrimary"-->
+<!--                            android:padding="3dp"-->
+<!--                            android:text="@string/overview"-->
+<!--                            android:textColor="@color/textColorPrimary"-->
+<!--                            android:textSize="15sp"-->
+<!--                            app:layout_constraintBottom_toTopOf="@+id/TvOverview"-->
+<!--                            app:layout_constraintTop_toBottomOf="@+id/titleTv"-->
+<!--                            app:layout_constraintVertical_bias="0.0"-->
+<!--                            tools:layout_editor_absoluteX="0dp" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/TvOverview"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:background="@drawable/bottomcircled_bordered_details"-->
+<!--                            android:padding="3dp"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="15sp"-->
+<!--                            app:Stringifnull="@{viewmodel.details.overview}"-->
+<!--                            app:layout_constraintTop_toBottomOf="@id/original_overview"-->
+<!--                            tools:layout_editor_absoluteX="0dp"-->
+<!--                            tools:layout_editor_absoluteY="380dp" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/genrestitle"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="28dp"-->
+<!--                            android:background="@color/colorPrimary"-->
+<!--                            android:padding="3dp"-->
+<!--                            android:text="@string/genres"-->
+<!--                            android:textColor="@color/textColorPrimary"-->
+<!--                            android:textSize="15sp"-->
+<!--                            app:layout_constraintTop_toBottomOf="@+id/TvOverview"-->
+<!--                            app:layout_constraintVertical_bias="0.0"-->
+<!--                            tools:layout_editor_absoluteX="0dp" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/genres"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:background="@drawable/bottomcircled_bordered_details"-->
+<!--                            android:padding="3dp"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="15sp"-->
+<!--                            app:genres="@{viewmodel.details.genres}"-->
+<!--                            app:layout_constraintTop_toBottomOf="@id/genrestitle"-->
+<!--                            tools:layout_editor_absoluteX="0dp"-->
+<!--                            tools:layout_editor_absoluteY="380dp"-->
+<!--                            tools:text="Action|Adventure" />-->
+
+<!--                        <GridLayout-->
+<!--                            android:id="@+id/grid"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="28dp"-->
+<!--                            android:columnCount="2"-->
+<!--                            android:rowCount="2"-->
+<!--                            app:layout_constraintTop_toBottomOf="@id/genres">-->
+
+<!--                            <TextView-->
+<!--                                android:id="@+id/totalvotes"-->
+<!--                                android:layout_row="0"-->
+<!--                                android:layout_rowWeight="1"-->
+<!--                                android:layout_column="0"-->
+<!--                                android:layout_columnWeight="1"-->
+<!--                                android:layout_marginEnd="3dp"-->
+<!--                                android:background="@color/colorPrimary"-->
+<!--                                android:padding="3dp"-->
+<!--                                android:text="@string/tv_show_votes"-->
+<!--                                android:textColor="@color/textColorPrimary"-->
+<!--                                android:textSize="15sp"/>-->
+
+<!--                            <TextView-->
+<!--                                android:id="@+id/totalvotes_"-->
+<!--                                android:layout_row="1"-->
+<!--                                android:layout_rowWeight="1"-->
+<!--                                android:layout_column="0"-->
+<!--                                android:layout_columnWeight="1"-->
+<!--                                android:layout_marginEnd="3dp"-->
+<!--                                android:background="@drawable/bottomcircled_bordered_details"-->
+<!--                                android:padding="3dp"-->
+<!--                                android:text='@{Integer.toString(viewmodel.details.vote_count).equals("0") ? `-` : Integer.toString(viewmodel.details.vote_count) }'-->
+<!--                                android:textColor="@color/white"-->
+<!--                                android:textSize="15sp"-->
+<!--                                app:layout_constraintTop_toBottomOf="@id/totalvotes"-->
+<!--                                tools:text="1229" />-->
+<!--                            &lt;!&ndash;                        android:text='@{Double.toString(viewmodel.details.vote_average).equals("0.0") ? "-" :Double.toString(viewmodel.details.vote_average) }'&ndash;&gt;-->
+<!--                            <TextView-->
+<!--                                android:id="@+id/totalrate"-->
+<!--                                android:layout_row="0"-->
+<!--                                android:layout_rowWeight="1"-->
+<!--                                android:layout_column="1"-->
+<!--                                android:layout_columnWeight="1"-->
+<!--                                android:background="@color/colorPrimary"-->
+<!--                                android:padding="3dp"-->
+<!--                                android:text="@string/tv_show_rate"-->
+<!--                                android:textColor="@color/textColorPrimary"-->
+<!--                                android:textSize="15sp" />-->
+
+<!--                            <TextView-->
+<!--                                android:id="@+id/totalrate_"-->
+<!--                                android:layout_row="1"-->
+<!--                                android:layout_rowWeight="1"-->
+<!--                                android:layout_column="1"-->
+<!--                                android:layout_columnWeight="1"-->
+<!--                                android:background="@drawable/bottomcircled_bordered_details"-->
+<!--                                android:padding="3dp"-->
+<!--                                android:text='@{Double.toString(viewmodel.details.vote_average).equals("0") || Double.toString(viewmodel.details.vote_average).equals("0.0") ? `-` : Double.toString(viewmodel.details.vote_average) }'-->
+<!--                                android:textColor="@color/white"-->
+<!--                                android:textSize="15sp"-->
+<!--                                app:layout_constraintTop_toBottomOf="@id/totalrate"-->
+<!--                                tools:text="9.2" />-->
+
+<!--                        </GridLayout>-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/creator"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="28dp"-->
+<!--                            android:background="@color/colorPrimary"-->
+<!--                            android:padding="3dp"-->
+<!--                            android:text="@string/created_by"-->
+<!--                            android:textColor="@color/textColorPrimary"-->
+<!--                            android:textSize="15sp"-->
+<!--                            app:layout_constraintTop_toBottomOf="@+id/grid"-->
+<!--                            app:layout_constraintVertical_bias="0.0"-->
+<!--                            tools:layout_editor_absoluteX="0dp" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/createdBy"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:background="@drawable/bottomcircled_bordered_details"-->
+<!--                            android:padding="3dp"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="15sp"-->
+<!--                            app:createdBy="@{viewmodel.details.created_by}"-->
+<!--                            app:layout_constraintTop_toBottomOf="@id/creator"-->
+<!--                            tools:layout_editor_absoluteX="0dp"-->
+<!--                            tools:layout_editor_absoluteY="380dp"-->
+<!--                            tools:text="Mitch | John" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/homepage"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="28dp"-->
+<!--                            android:background="@color/colorPrimary"-->
+
+<!--                            android:padding="3dp"-->
+<!--                            android:text="@string/homepage"-->
+
+<!--                            android:textColor="@color/textColorPrimary"-->
+<!--                            android:textSize="15sp"-->
+
+<!--                            app:layout_constraintTop_toBottomOf="@+id/createdBy"-->
+<!--                            app:layout_constraintVertical_bias="0.0"-->
+<!--                            tools:layout_editor_absoluteX="0dp" />-->
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/hompeageImage"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="97dp"-->
+<!--                            android:background="@drawable/bottomcircled_bordered_details"-->
+<!--                            android:onClick="@{()->viewmodel.addUrl(viewmodel.details.homepage)}"-->
+<!--                            android:paddingTop="8dp"-->
+<!--                            android:paddingBottom="8dp"-->
+<!--                            android:src="@drawable/coding"-->
+<!--                            app:layout_constraintTop_toBottomOf="@+id/homepage" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/seasons"-->
+<!--                            android:paddingVertical="10dp"-->
+<!--                            android:paddingHorizontal="5dp"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="30dp"-->
+<!--                            android:background="@drawable/circled_bordered_smaller_radius"-->
+<!--                            android:clickable="true"-->
+<!--                            android:drawableEnd="@drawable/arrow_up_details"-->
+<!--                            android:focusable="true"-->
+<!--                            android:onClick="@{()->viewmodel.seasonClicked(NestedScrollView,seasons,ScrollView)}"-->
+<!--                            android:foreground="?android:attr/selectableItemBackground"-->
+<!--                            android:gravity="center"-->
+<!--                            android:padding="3dp"-->
+<!--                            android:text="@string/show_seasons"-->
+<!--                            android:textColor="@color/textColorPrimary"-->
+<!--                            android:textSize="20sp"-->
+<!--                            android:textStyle="bold"-->
+<!--                            app:layout_constraintTop_toBottomOf="@id/hompeageImage"-->
+<!--                            tools:layout_editor_absoluteX="0dp" />-->
+
+<!--                        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            app:layout_constraintTop_toBottomOf="@id/seasons">-->
 
 
-                                <LinearLayout
-                                    android:id="@+id/LinearLayout1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:background="@drawable/bottomcircled_bordered_details"
-                                    android:orientation="vertical"
-                                    app:inflateData="@{viewmodel.details.seasons}"
-                                    app:nested_scrollview="@{NestedScrollView}" />
+<!--                            <androidx.core.widget.NestedScrollView-->
 
-                            </androidx.core.widget.NestedScrollView>
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                    <!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
-                </RelativeLayout>
+<!--                                android:id="@+id/NestedScrollView"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:scrollbarThumbVertical="@drawable/scrollbar_style"-->
+<!--                                android:scrollbars="vertical"-->
+<!--                                android:visibility="gone"-->
+<!--                                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                app:layout_constraintStart_toStartOf="parent"-->
+<!--                                app:layout_constraintTop_toTopOf="parent">-->
 
 
-            </LinearLayout>
+<!--                                <LinearLayout-->
+<!--                                    android:id="@+id/LinearLayout1"-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="match_parent"-->
+<!--                                    android:background="@drawable/bottomcircled_bordered_details"-->
+<!--                                    android:orientation="vertical"-->
+<!--                                    app:inflateData="@{viewmodel.details.seasons}"-->
+<!--                                    app:nested_scrollview="@{NestedScrollView}" />-->
 
-        </ScrollView>
+<!--                            </androidx.core.widget.NestedScrollView>-->
+<!--                        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+<!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--                    &lt;!&ndash;                </androidx.constraintlayout.widget.ConstraintLayout>&ndash;&gt;-->
+<!--                </RelativeLayout>-->
+
+
+<!--            </LinearLayout>-->
+
+<!--        </ScrollView>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

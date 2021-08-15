@@ -17,15 +17,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.movierama.databinding.ActivityMainBinding
-import com.example.movierama.ui.PopularFragment
 import com.example.movierama.viewmodels.SharedViewModel
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.banner_layout.view.*
+import com.google.android.material.card.MaterialCardView
 
 
 class MainActivity : AppCompatActivity(),View.OnClickListener {
@@ -42,11 +41,13 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
     lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        binding.lifecycleOwner = this
         window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
 
         setStatusBarColor()
-        setGlobalActionListeners()
+
 
         val networkConnectionIncterceptor = this.applicationContext?.let { NetworkConnectionIncterceptor(it) }
         val webService = ApiClient(networkConnectionIncterceptor!!)
@@ -54,14 +55,10 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
         viewModelFactory = ViewModelFactory(repository,this)
         viewModel = ViewModelProvider(this, viewModelFactory).get(SharedViewModel::class.java)
 
-        searchImg.setOnClickListener {
-            findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_searchFragment)
-        }
-
-        searchHereEdittext.doOnTextChanged { text, start, before, count ->
+        binding.searchHereEdittext.doOnTextChanged { text, _, _, _ ->
             viewModel.searchedText.postValue(text.toString())
         }
-        searchImg.setOnClickListener {
+        binding.searchImg.setOnClickListener {
             if (searchcontainerOpened)
                 moveMainContainer("up")
             else
@@ -82,25 +79,33 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
 //            }
 //        }
 
-
+        setGlobalActionListeners()
     }
 
     fun showBanner(value: String, success: Boolean = false) {
         val view: View = LayoutInflater.from(this).inflate(R.layout.banner_layout, null)
 
+
         runOnUiThread {
-            frameLayout?.let { cLayout ->
+
+            binding.frameLayout.let { cLayout ->
                 cLayout.addView(view, 0)
                 cLayout.bringToFront()
-                cLayout.BannerTxtV.text = value
+
+
+                val BannerTxtV =cLayout.findViewById<TextView>(R.id.BannerTxtV)
+                val cardView = cLayout.findViewById<MaterialCardView>(R.id.cardView)
+                val imageView = cLayout.findViewById<ImageView>(R.id.imageView)
+
+                BannerTxtV.text = value
 
                 if(!success){
-                    cLayout.cardView.backgroundTintList = ContextCompat.getColorStateList(this, android.R.color.holo_red_light)
-                    cLayout.imageView.background = ContextCompat.getDrawable(this, R.drawable.ic_baseline_close_24)
+                    cardView.backgroundTintList = ContextCompat.getColorStateList(this, android.R.color.holo_red_light)
+                    imageView.background = ContextCompat.getDrawable(this, R.drawable.ic_baseline_close_24)
 
                 }else{
-                    cLayout.cardView.backgroundTintList = ContextCompat.getColorStateList(this, R.color.teal_200)
-                    cLayout.imageView.background = ContextCompat.getDrawable(this, R.drawable.tick_icon)
+                    cardView.backgroundTintList = ContextCompat.getColorStateList(this, R.color.teal_200)
+                    imageView.background = ContextCompat.getDrawable(this, R.drawable.tick_icon)
                 }
 
                 Handler(Looper.getMainLooper()).postDelayed({
@@ -114,61 +119,61 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
         if (s == "down") {
 
             Handler(Looper.getMainLooper()).postDelayed({
-                text_input_layout.visibility=View.VISIBLE
-                text_input_layout.animate().alpha(1.0f)
+                binding.textInputLayout.visibility=View.VISIBLE
+                binding.textInputLayout.animate().alpha(1.0f)
             }, 500)
 
 
-            ObjectAnimator.ofFloat(nav_host_fragment, "translationY",  text_input_layout.y+8f).apply {
+            ObjectAnimator.ofFloat(binding.navHostFragment, "translationY",   binding.textInputLayout.y+8f).apply {
                 duration = 600
                 addStateListener()
                 start()
                 searchcontainerOpened = true
             }
-            searchHereEdittext.isEnabled = true
+            binding.searchHereEdittext.isEnabled = true
 
         } else {
-            text_input_layout.animate().alpha(0.0f)
-            text_input_layout.visibility=View.GONE
-            ObjectAnimator.ofFloat(nav_host_fragment, "translationY",  0f).apply {
+            binding.textInputLayout.animate().alpha(0.0f)
+            binding.textInputLayout.visibility=View.GONE
+            ObjectAnimator.ofFloat(binding.navHostFragment, "translationY",  0f).apply {
                 duration = 600
                 addStateListener()
                 start()
                 searchcontainerOpened = false
             }
-            searchHereEdittext.isEnabled = false
+            binding.searchHereEdittext.isEnabled = false
         }
 
     }
     private fun ObjectAnimator.addStateListener() {
         addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationStart(animation: Animator?) {
-                searchImg.isEnabled = false
+                binding.searchImg.isEnabled = false
 
             }
 
             override fun onAnimationEnd(animation: Animator?) {
-                searchImg.isEnabled = true
+                binding.searchImg.isEnabled = true
 
             }
         })
     }
     private fun setGlobalActionListeners() {
-        searchImg.setOnClickListener {
-            findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_searchFragment)
-        }
-        motionLayoutId.findViewById<TextView>(R.id.popularTxt).setOnClickListener {
-            findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_popularFragment)
-        }
-        motionLayoutId.findViewById<ImageView>(R.id.popularIcon).setOnClickListener {
-            findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_popularFragment)
-        }
-        motionLayoutId.findViewById<ImageView>(R.id.favIcon).setOnClickListener {
-            findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_favoritesFragment)
-        }
-        motionLayoutId.findViewById<TextView>(R.id.favTxt).setOnClickListener {
-            findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_favoritesFragment)
-        }
+      //  binding.searchImg.setOnClickListener {
+           // findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_searchFragment)
+       // }
+//        motionLayoutId.findViewById<TextView>(R.id.popularTxt).setOnClickListener {
+//            findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_popularFragment)
+//        }
+//        motionLayoutId.findViewById<ImageView>(R.id.popularIcon).setOnClickListener {
+//            findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_popularFragment)
+//        }
+//        motionLayoutId.findViewById<ImageView>(R.id.favIcon).setOnClickListener {
+//            findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_favoritesFragment)
+//        }
+//        motionLayoutId.findViewById<TextView>(R.id.favTxt).setOnClickListener {
+//            findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_favoritesFragment)
+//        }
 //        motionLayoutId.findViewById<ImageView>(R.id.TopRatedicon).setOnClickListener {
 //            findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_Top_Rated)
 //        }
