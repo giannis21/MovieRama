@@ -9,8 +9,6 @@ import com.example.movierama.utils.NoInternetException
 
 object netMethods {
 
-    //var listener: InternetCallback? = null
-
     fun hasInternet(applicationContext: Context) {
 
             if (!isInternetAvailable(applicationContext)) {
@@ -18,7 +16,6 @@ object netMethods {
             }
 
     }
-
 
 
     fun isInternetAvailable(applicationContext: Context): Boolean {

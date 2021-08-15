@@ -61,13 +61,9 @@ class SearchFragment : Fragment(),ItemHandler {
 
         val adapter = PagedItemAdapter(requireContext(),itemHandler,viewModel = viewModel)
         recyclerview_search.adapter = adapter
-        viewModel.createFactory()
+      //  viewModel.createFactory()
 
-        ShowsDataSource.firstResults = {
-            if(it == 0 && searcheditText.text!!.isNotEmpty()){
-                putPlaceholders(SearchResult.NO_RESULT, adapter, "")
-            }
-        }
+
        // var list=PagedList<>()
        // adapter.submitList(paged)
         viewModel.itemPagedList?.observe(viewLifecycleOwner, Observer {

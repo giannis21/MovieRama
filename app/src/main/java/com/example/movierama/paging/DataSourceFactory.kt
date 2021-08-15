@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import androidx.paging.PageKeyedDataSource
-import com.example.movierama.data.movie.Movie
 import com.example.movierama.data.movie.MovieResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,9 +18,6 @@ class DataSourceFactory(var remoteRepository: RemoteRepository, private var quer
         return item
     }
 
-//    fun getQuery() = query
-//
-//    fun getSource() = itemLiveDataSource.value
 
     fun updateQuery(query: String) {
         this.query = query

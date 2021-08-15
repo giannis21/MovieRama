@@ -8,62 +8,105 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import com.example.movierama.databinding.ActivityMainBinding
 import com.example.movierama.ui.PopularFragment
 import com.example.movierama.viewmodels.SharedViewModel
-
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.banner_layout.view.*
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity(),View.OnClickListener {
 
     lateinit var viewModel: SharedViewModel
     private lateinit var viewModelFactory: ViewModelFactory
     var searchcontainerOpened = false
+    private lateinit var controller: NavController
+    lateinit var listener:NavController.OnDestinationChangedListener
+    companion object {
+        var internetExceptionListener: (() -> Unit)? = null
+    }
 
+    lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+
         setStatusBarColor()
         setGlobalActionListeners()
+
+        val networkConnectionIncterceptor = this.applicationContext?.let { NetworkConnectionIncterceptor(it) }
+        val webService = ApiClient(networkConnectionIncterceptor!!)
+        val repository = RemoteRepository(webService)
+        viewModelFactory = ViewModelFactory(repository,this)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(SharedViewModel::class.java)
 
         searchImg.setOnClickListener {
             findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_searchFragment)
         }
-//        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
-//        navController.addOnDestinationChangedListener { _, destination, _ ->
+
+        searchHereEdittext.doOnTextChanged { text, start, before, count ->
+            viewModel.searchedText.postValue(text.toString())
+        }
+        searchImg.setOnClickListener {
+            if (searchcontainerOpened)
+                moveMainContainer("up")
+            else
+                moveMainContainer("down")
+        }
+
+        internetExceptionListener ={
+            Toast.makeText(this,"no internet",Toast.LENGTH_SHORT).show()
+            showBanner("No Internet connection!")
+        }
+//        controller = Navigation.findNavController(this, R.id.nav_host_fragment)
+
+//        listener = NavController.OnDestinationChangedListener { controller, destination, arguments ->
 //            when (destination.id) {
 //                R.id.popularFragment -> appBarTxt.text="Most Popular"
 //                R.id.detailsFragment -> appBarTxt.text="Favorite Movies"
 //                else -> appBarTxt.text="Search Movie"
 //            }
 //        }
-        text_input_layout.editText?.doOnTextChanged { text, start, before, count ->
-            viewModel.searchedText.postValue(text.toString())
-        }
-
-        val networkConnectionIncterceptor = this.applicationContext?.let { NetworkConnectionIncterceptor(it) }
-        val webService = ApiClient(networkConnectionIncterceptor!!)
-        val repository = RemoteRepository(webService)
 
 
+    }
 
-        viewModelFactory = ViewModelFactory(repository,this)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(SharedViewModel::class.java)
+    fun showBanner(value: String, success: Boolean = false) {
+        val view: View = LayoutInflater.from(this).inflate(R.layout.banner_layout, null)
 
-        searchImg.setOnClickListener {
-            if (searchcontainerOpened)
-                moveMainContainer("up")
-            else
-                moveMainContainer("down")
+        runOnUiThread {
+            frameLayout?.let { cLayout ->
+                cLayout.addView(view, 0)
+                cLayout.bringToFront()
+                cLayout.BannerTxtV.text = value
+
+                if(!success){
+                    cLayout.cardView.backgroundTintList = ContextCompat.getColorStateList(this, android.R.color.holo_red_light)
+                    cLayout.imageView.background = ContextCompat.getDrawable(this, R.drawable.ic_baseline_close_24)
+
+                }else{
+                    cLayout.cardView.backgroundTintList = ContextCompat.getColorStateList(this, R.color.teal_200)
+                    cLayout.imageView.background = ContextCompat.getDrawable(this, R.drawable.tick_icon)
+                }
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    cLayout.removeView(view)
+                }, 3000)
+            }
         }
     }
 
@@ -172,13 +215,23 @@ class MainActivity : AppCompatActivity() {
 //        }
     }
 
-    private val Int.toPx: Int
-        get() = (this * Resources.getSystem().displayMetrics.density).toInt()
-
+//    override fun onResume() {
+//        super.onResume()
+//        controller.addOnDestinationChangedListener(listener)
+//    }
+//
+//    override fun onPause() {
+//        controller.removeOnDestinationChangedListener(listener)
+//        super.onPause()
+//    }
     private fun setStatusBarColor() {
         val window: Window = this.window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
+    }
+
+    override fun onClick(p0: View?) {
+        TODO("Not yet implemented")
     }
 }

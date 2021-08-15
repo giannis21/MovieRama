@@ -83,10 +83,10 @@ object bindingAdapters {
     @BindingAdapter("imageUrl")
     @JvmStatic
     fun loadImage(view: ImageView, url: String?) {
-        val progressBar =
-            (view.parent as RelativeLayout).findViewById<ProgressBar>(R.id.progressBar)
+        val progressBar = (view.parent as RelativeLayout).findViewById<ProgressBar>(R.id.progressBar)
+
         Glide.with(view.context).load("https://image.tmdb.org/t/p/w500/$url")
-            .error(Glide.with(view.context).load(R.drawable.star))
+            .error(Glide.with(view.context).load(R.drawable.no_results))
             .apply(RequestOptions().transform(RoundedCorners(40)))
             .skipMemoryCache(true)
             .listener(object : RequestListener<Drawable> {

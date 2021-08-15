@@ -1,6 +1,6 @@
 package com.example.movierama.data.movie
 
-data class Movie(
+data class Movies(
     val page: Int,
     val results: List<MovieResult>,
     val total_pages: Int,

@@ -1,20 +1,15 @@
 package com.example.movierama
 
 import android.content.Context
-import android.widget.Toast
 import androidx.paging.PageKeyedDataSource
-import com.example.movierama.RemoteRepository
-import com.example.movierama.data.movie.Movie
+import com.example.movierama.MainActivity.Companion.internetExceptionListener
 import com.example.movierama.data.movie.MovieResult
+import com.example.movierama.utils.NoInternetException
 import kotlinx.coroutines.*
-import retrofit2.Response
 
 class ShowsDataSource(var remoteRepository: RemoteRepository, private var scope: CoroutineScope, var query: String, var context: Context, var isSearch: Boolean) :
         PageKeyedDataSource<Int, MovieResult>() {
 
-    companion object {
-        var firstResults: ((Int) -> Unit)? = null
-    }
 
     var FirstPage = 1
     private var supervisorJob = SupervisorJob()
@@ -32,12 +27,16 @@ class ShowsDataSource(var remoteRepository: RemoteRepository, private var scope:
                             remoteRepository.searchTvShows(FirstPage, query)
 
                         response.body()!!.results.let {
-                            firstResults?.invoke(it.size)
                             callback.onResult(it, null, (FirstPage + 1))
                         }
 
 
-                    } catch (exception: Exception) {}
+                    } catch (exception: Exception) {
+
+                        if(exception is NoInternetException){
+                            internetExceptionListener?.invoke()
+                        }
+                    }
 
                 }
 
@@ -65,6 +64,9 @@ class ShowsDataSource(var remoteRepository: RemoteRepository, private var scope:
                     callback.onResult(it, key)
                 }
             } catch (exception: Exception) {
+                if(exception is NoInternetException){
+                    internetExceptionListener?.invoke()
+                }
             }
 
         }
@@ -86,6 +88,9 @@ class ShowsDataSource(var remoteRepository: RemoteRepository, private var scope:
                     callback.onResult(it, key)
                 }
             } catch (exception: Exception) {
+                if(exception is NoInternetException){
+                    internetExceptionListener?.invoke()
+                }
             }
         }
     }
