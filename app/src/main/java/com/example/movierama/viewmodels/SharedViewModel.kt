@@ -16,6 +16,7 @@ import com.example.movierama.data.reviews.Reviews
 import com.example.movierama.utils.NoInternetException
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import retrofit2.Response
 
 
 class SharedViewModel(var remoteRepository: RemoteRepository, var context: Context) : ViewModel() {
@@ -23,15 +24,15 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
     var job: Job = Job()
 
     var loading = MutableLiveData<Boolean>(false)
-    var popularMovies = MutableLiveData<MutableList<MovieResult>>()
+
     var noInternetException = MutableLiveData<Boolean>(false)
     var error = MutableLiveData<Boolean>(false)
     var favIdDbChanged = MutableLiveData<String?>(null)
     var favIdAdded: Boolean = false
     var searchedText = MutableLiveData<String>()
-    var currentDetailObj = MutableLiveData<Detail_Movie>()
-    var currentSimilarObj = MutableLiveData<Movies>()
-    var currentReviewsObj = MutableLiveData<Reviews>()
+    var currentDetailObj = MutableLiveData<Detail_Movie?>(null)
+    var currentSimilarObj = MutableLiveData<Movies?>(null)
+    var currentReviewsObj = MutableLiveData<Reviews?>(null)
     var favorites: LiveData<List<MovieFav>>
 
     val exceptionHandler = CoroutineExceptionHandler { _, _ ->
@@ -84,7 +85,10 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
                     getSimilar(id)
 
                 }.collect {
-                    currentDetailObj.postValue(it)
+                    if(it.isSuccessful)
+                       currentDetailObj.postValue(it.body())
+                    else
+                        error.postValue(true)
 
                 }
 
@@ -92,12 +96,7 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
 
     }
 
-    private fun handleExceptions(e: Throwable) {
-        if (e is NoInternetException)
-            noInternetException.postValue(true)
-        else
-            error.postValue(true)
-    }
+
 
     private fun getSimilar(id: String) {
         viewModelScope.launch(Dispatchers.IO + Job()) {
@@ -105,7 +104,11 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
             getSimilarFlow(id).catch { e ->
                 println("call failed(similar) ${e.localizedMessage}")
             }.collect { similar ->
-                currentSimilarObj.postValue(similar)
+                if(similar.isSuccessful)
+                    currentSimilarObj.postValue(similar.body())
+                else
+                    error.postValue(true)
+
             }
         }
     }
@@ -116,14 +119,17 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
             getReviewsFlow(id).catch { e ->
                 println("call failed(reviews) ${e.localizedMessage}")
             }.collect { reviews ->
-                currentReviewsObj.postValue(reviews)
+                if(reviews.isSuccessful)
+                    currentReviewsObj.postValue(reviews.body())
+                else
+                    error.postValue(true)
             }
         }
     }
 
     private suspend fun getOptionalInfo(id: String) {
         getReviewsFlow(id).zip(getSimilarFlow(id)) { reviews, similarMovies ->
-            println("reviews result ${reviews.results}")
+            println("reviews result ${reviews}")
             println("reviews similar result ${similarMovies.toString()}")
             return@zip
         }
@@ -137,15 +143,15 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
             }
     }
 
-    fun getDetailsFlow(id: String): Flow<Detail_Movie> = flow {
-        emit(remoteRepository.getMovieDetails(id).body()!!)
+    fun getDetailsFlow(id: String): Flow<Response<Detail_Movie>> = flow {
+        emit(remoteRepository.getMovieDetails(id))
     }
 
-    fun getReviewsFlow(id: String): Flow<Reviews> = flow {
-        emit(remoteRepository.getMovieReviews(id).body()!!)
+    fun getReviewsFlow(id: String): Flow<Response<Reviews>> = flow {
+        emit(remoteRepository.getMovieReviews(id))
     }
 
-    fun getSimilarFlow(id: String): Flow<Movies> = flow {
+    fun getSimilarFlow(id: String): Flow<Response<Movies>> = flow {
         emit(remoteRepository.getSimilarMovies(id, 1))
     }
 
@@ -172,5 +178,11 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
         }
     }
 
+    private fun handleExceptions(e: Throwable) {
+        if (e is NoInternetException)
+            noInternetException.postValue(true)
+        else
+            error.postValue(true)
+    }
 
 }

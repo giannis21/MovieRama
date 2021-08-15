@@ -31,7 +31,7 @@ interface ApiClient {
     suspend fun getMovieReviews(@Path("movie_id") id:String ,@Query("language") lang:String="en-US") : Response<Reviews>
 
     @GET("movie/{movie_id}/similar")
-    suspend fun getSimilarMovies( @Path("movie_id") id:String,@Query("language") lang:String="en-US", @Query("page") page:String) : Movies
+    suspend fun getSimilarMovies( @Path("movie_id") id:String,@Query("language") lang:String="en-US", @Query("page") page:String) : Response<Movies>
 
     companion object {
 

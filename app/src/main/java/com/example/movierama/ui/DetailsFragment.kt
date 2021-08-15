@@ -34,13 +34,8 @@ class DetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_details, container, false)
-        binding = FragmentDetailsBinding.inflate(inflater, container, false)
-//        binding.viewModel = viewModel
-//        binding.memberId = Singleton.memberId
-//        binding.isCTAEnabled = false
 
+        binding = FragmentDetailsBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -52,7 +47,21 @@ class DetailsFragment : Fragment() {
         viewModel.getMovieDetails(args.id)
 
         viewModel.currentDetailObj.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                binding.movieDetails=it
+            }
+        })
 
+        viewModel.currentReviewsObj.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                binding.reviews=it
+            }
+        })
+
+        viewModel.currentSimilarObj.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                binding.movies=it
+            }
         })
     }
 }

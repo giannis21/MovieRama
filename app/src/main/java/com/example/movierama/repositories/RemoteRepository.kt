@@ -21,7 +21,7 @@ class RemoteRepository(private val my_Api: ApiClient) {
         return my_Api.getMovieReviews(id,"en_US")
     }
 
-    suspend fun getSimilarMovies(id:String,page:Int): Movies {
+    suspend fun getSimilarMovies(id:String,page:Int): Response<Movies> {
         return my_Api.getSimilarMovies(id,"en_US",page.toString())
     }
 
