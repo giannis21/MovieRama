@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.movierama.MainActivity
 import com.example.movierama.R
+import com.example.movierama.data.movie.Movies
 import com.example.movierama.databinding.FragmentDetailsBinding
 import com.example.movierama.viewmodels.SharedViewModel
 
@@ -64,4 +66,14 @@ class DetailsFragment : Fragment() {
             }
         })
     }
+
+    fun goBack(){
+        findNavController().navigateUp()
+    }
+
+//    fun <T> nonNull(var movies:Movies?,callback:((T) ->Unit)? = null){
+//        movies?.let {
+//           callback(binding.movies)=it
+//        }
+//    }
 }

@@ -13,7 +13,9 @@ class ShowsDataSource(var remoteRepository: RemoteRepository, private var scope:
 
     var FirstPage = 1
     private var supervisorJob = SupervisorJob()
-
+    companion object{
+        var listSizeListener: ((Boolean) -> Unit) ?=null
+    }
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, MovieResult>) {
 
@@ -28,6 +30,7 @@ class ShowsDataSource(var remoteRepository: RemoteRepository, private var scope:
 
                         response.body()!!.results.let {
                             callback.onResult(it, null, (FirstPage + 1))
+
                         }
 
 

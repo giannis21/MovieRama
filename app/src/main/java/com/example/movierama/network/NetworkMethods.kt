@@ -1,4 +1,4 @@
-package com.example.tvshows.data
+package com.example.movierama.network
 
 import android.content.Context
 import android.net.ConnectivityManager

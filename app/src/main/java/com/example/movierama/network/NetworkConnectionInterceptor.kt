@@ -1,7 +1,7 @@
-package com.example.movierama
+package com.example.movierama.network
 import android.content.Context
 import android.os.Build
- import com.example.tvshows.data.netMethods
+
 import okhttp3.Interceptor
 
 import okhttp3.Response

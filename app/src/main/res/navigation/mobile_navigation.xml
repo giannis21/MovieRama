@@ -14,19 +14,9 @@
             android:id="@+id/action_popularFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
     </fragment>
-    <action android:id="@+id/action_global_popularFragment" app:destination="@id/popularFragment" />
-    <fragment
-        android:id="@+id/searchFragment"
-        android:name="com.example.movierama.ui.SearchFragment"
-        android:label="fragment_search"
-        tools:layout="@layout/fragment_search" >
-        <action
-            android:id="@+id/action_searchFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
-    </fragment>
-    <action android:id="@+id/action_global_searchFragment" app:destination="@id/searchFragment" />
     <fragment
         android:id="@+id/detailsFragment"
+        android:tag="detailsFragment"
         android:name="com.example.movierama.ui.DetailsFragment"
         android:label="fragment_details"
         tools:layout="@layout/fragment_details" >
@@ -34,9 +24,4 @@
             android:name="id"
             app:argType="string" />
     </fragment>
-    <fragment
-        android:id="@+id/favoritesFragment"
-        android:name="com.example.movierama.ui.FavoritesFragment"
-        android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" /><action android:id="@+id/action_global_favoritesFragment" app:destination="@id/favoritesFragment"/>
 </navigation>

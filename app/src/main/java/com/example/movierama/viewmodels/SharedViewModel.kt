@@ -29,12 +29,13 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
     var error = MutableLiveData<Boolean>(false)
     var favIdDbChanged = MutableLiveData<String?>(null)
     var favIdAdded: Boolean = false
-    var searchedText = MutableLiveData<String>()
+
     var currentDetailObj = MutableLiveData<Detail_Movie?>(null)
     var currentSimilarObj = MutableLiveData<Movies?>(null)
     var currentReviewsObj = MutableLiveData<Reviews?>(null)
     var favorites: LiveData<List<MovieFav>>
 
+    var showLoader= MutableLiveData<Boolean?>(null)
     val exceptionHandler = CoroutineExceptionHandler { _, _ ->
         // dialog.hideLoadingDialog()
         //   noInternetException.postValue(true)
@@ -62,31 +63,26 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
     }
 
     fun searchTvShows(query: String) {
-        val search = query.trim()
-        factory.updateQuery(search)
-    }
-
-    fun reserfactory() {
-        factory.updateQuery("")
+        factory.updateQuery(query.trim())
     }
 
 
     fun getMovieDetails(id: String) {
-        //  dialog.displayLoadingDialog()
+        showLoader.postValue(true)
         viewModelScope.launch {
             getDetailsFlow(id)
                 .catch { e ->
                     handleExceptions(e)
-
+                    showLoader.postValue(false)
                 }.flowOn(Dispatchers.IO)
                 .onCompletion {
 
                     getReviews(id)
                     getSimilar(id)
-
+                    showLoader.postValue(false)
                 }.collect {
                     if(it.isSuccessful)
-                       currentDetailObj.postValue(it.body())
+                        currentDetailObj.postValue(it.body())
                     else
                         error.postValue(true)
 
@@ -106,42 +102,22 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
             }.collect { similar ->
                 if(similar.isSuccessful)
                     currentSimilarObj.postValue(similar.body())
-                else
-                    error.postValue(true)
-
             }
         }
     }
 
     private fun getReviews(id: String) {
         viewModelScope.launch(Dispatchers.IO + Job()) {
-
             getReviewsFlow(id).catch { e ->
                 println("call failed(reviews) ${e.localizedMessage}")
             }.collect { reviews ->
                 if(reviews.isSuccessful)
                     currentReviewsObj.postValue(reviews.body())
-                else
-                    error.postValue(true)
             }
         }
     }
 
-    private suspend fun getOptionalInfo(id: String) {
-        getReviewsFlow(id).zip(getSimilarFlow(id)) { reviews, similarMovies ->
-            println("reviews result ${reviews}")
-            println("reviews similar result ${similarMovies.toString()}")
-            return@zip
-        }
-            .flowOn(Dispatchers.Default)
-            .catch { e ->
-                println("reviews exc ${e.localizedMessage}")
 
-            }
-            .collect {
-
-            }
-    }
 
     fun getDetailsFlow(id: String): Flow<Response<Detail_Movie>> = flow {
         emit(remoteRepository.getMovieDetails(id))
@@ -185,4 +161,21 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
             error.postValue(true)
     }
 
+    /*
+        private suspend fun getOptionalInfo(id: String) {
+        getReviewsFlow(id).zip(getSimilarFlow(id)) { reviews, similarMovies ->
+            println("reviews result ${reviews}")
+            println("reviews similar result ${similarMovies.toString()}")
+            return@zip
+        }
+            .flowOn(Dispatchers.Default)
+            .catch { e ->
+                println("reviews exc ${e.localizedMessage}")
+
+            }
+            .collect {
+
+            }
+    }
+     */
 }

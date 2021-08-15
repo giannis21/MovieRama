@@ -1,4 +1,4 @@
-package com.example.tvshows.tvshows.ui.adapters.paging
+package com.example.movierama.paging
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -30,6 +30,9 @@ class PagedItemAdapter(var context: Context, var itemHandler: ItemHandler?, var 
         return ItemViewHolder(binding)
     }
 
+    override fun getItemCount(): Int {
+        return currentList?.size ?: 0
+    }
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
 
         holder.itemLayoutBinding.setVariable(BR.movie, getItem(position))
@@ -40,6 +43,7 @@ class PagedItemAdapter(var context: Context, var itemHandler: ItemHandler?, var 
         // which allows the RecyclerView to make the correct view size measurements
 
         holder.itemLayoutBinding.executePendingBindings()
+
         holder.itemLayoutBinding.image.setOnClickListener {
             itemHandler?.onClick(getItem(position)?.id.toString())
         }
@@ -48,13 +52,14 @@ class PagedItemAdapter(var context: Context, var itemHandler: ItemHandler?, var 
         }
     }
 
+    class ItemViewHolder(var itemLayoutBinding: ItemLayoutBinding) : RecyclerView.ViewHolder(itemLayoutBinding.root)
 
     @JvmName("setQuery1")
     fun setQuery(query: String){
         this.query=query
     }
 
-    class ItemViewHolder(var itemLayoutBinding: ItemLayoutBinding) : RecyclerView.ViewHolder(itemLayoutBinding.root)
+
 
 
 }

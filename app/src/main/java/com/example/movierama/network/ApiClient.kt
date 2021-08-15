@@ -3,6 +3,7 @@ package com.example.movierama
 import com.example.movierama.data.movie.Movies
 import com.example.movierama.data.movieDetail.Detail_Movie
 import com.example.movierama.data.reviews.Reviews
+import com.example.movierama.network.NetworkConnectionIncterceptor
 import com.example.movierama.utils.Constants
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

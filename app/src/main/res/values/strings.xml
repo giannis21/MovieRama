@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">MovieRama</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="popular">Popular</string>
     <string name="api_key">30842f7c80f80bb3ad8a2fb98195544d</string>
     <string name="search_for_movies">search for movies</string>
     <string name="most_popular">Most Popular</string>
     <string name="search_movies">Search movies..</string>
+    <string name="movie_detail">Movie details</string>
+    <string name="connectivity_problem_npull_down_to_refresh">Connectivity problem\npull down to refresh</string>
 </resources>
