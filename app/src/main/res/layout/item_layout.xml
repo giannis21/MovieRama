@@ -79,6 +79,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         app:imageUrl="@{movie.poster_path}"
+                        app:isDetails="@{false}"
                         android:background="@drawable/ripple_selector"
                         android:clickable="true"
                         android:focusable="true"

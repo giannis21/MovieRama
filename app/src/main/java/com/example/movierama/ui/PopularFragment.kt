@@ -81,7 +81,7 @@ class PopularFragment : Fragment(), ItemHandler {
         viewModel.itemPagedList?.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
-                println("sizeeeee ${adapter.itemCount }")
+
                 if(adapter.itemCount > 0)
                     binding.noInternetMessage.visibility=View.GONE
             }

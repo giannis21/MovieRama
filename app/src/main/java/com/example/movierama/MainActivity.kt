@@ -52,8 +52,7 @@ class MainActivity : AppCompatActivity() {
         setStatusBarColor()
 
 
-        val networkConnectionIncterceptor =
-            this.applicationContext?.let { NetworkConnectionIncterceptor(it) }
+        val networkConnectionIncterceptor = this.applicationContext?.let { NetworkConnectionIncterceptor(it) }
         val webService = ApiClient(networkConnectionIncterceptor!!)
         val repository = RemoteRepository(webService)
         viewModelFactory = ViewModelFactory(repository, this)
@@ -189,7 +188,6 @@ private fun moveMainContainer(s: String) {
     if (s == "down") {
 
         Handler(Looper.getMainLooper()).postDelayed({
-            binding.textInputLayout.visibility = View.VISIBLE
             binding.textInputLayout.animate().alpha(1.0f)
         }, 500)
 
@@ -208,7 +206,7 @@ private fun moveMainContainer(s: String) {
 
     } else {
         binding.textInputLayout.animate().alpha(0.0f)
-        binding.textInputLayout.visibility = View.GONE
+
         ObjectAnimator.ofFloat(binding.navHostFragment, "translationY", 0f).apply {
             duration = 600
             addStateListener()
