@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <gradient android:startColor="@color/navdrawer_color" android:endColor="@color/white"
+    <gradient android:startColor="@color/toolbar_color" android:endColor="@color/white"
         android:angle="45"/>
     <corners android:radius="6dp" />
 </shape>

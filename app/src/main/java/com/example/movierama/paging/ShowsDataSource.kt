@@ -7,53 +7,57 @@ import com.example.movierama.data.movie.MovieResult
 import com.example.movierama.utils.NoInternetException
 import kotlinx.coroutines.*
 
-class ShowsDataSource(var remoteRepository: RemoteRepository, private var scope: CoroutineScope, var query: String, var context: Context, var isSearch: Boolean) :
-        PageKeyedDataSource<Int, MovieResult>() {
+class ShowsDataSource(
+    var remoteRepository: RemoteRepository,
+    private var scope: CoroutineScope,
+    var query: String,
+    var context: Context,
+    var isSearch: Boolean
+) :
+    PageKeyedDataSource<Int, MovieResult>() {
 
-
+    val exceptionHandler = CoroutineExceptionHandler { _, _ ->
+        internetExceptionListener?.invoke()
+    }
     var FirstPage = 1
     private var supervisorJob = SupervisorJob()
-    companion object{
-        var listSizeListener: ((Boolean) -> Unit) ?=null
-    }
 
-    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, MovieResult>) {
+    override fun loadInitial(
+        params: LoadInitialParams<Int>,
+        callback: LoadInitialCallback<Int, MovieResult>
+    ) {
 
-
-                scope.launch(supervisorJob) {
-                    try {
-
-                        val response = if (query.isEmpty())
-                            remoteRepository.getMostPopular(FirstPage)
-                        else
-                            remoteRepository.searchTvShows(FirstPage, query)
-
-                        response.body()!!.results.let {
-                            callback.onResult(it, null, (FirstPage + 1))
-
-                        }
+        try {
+            scope.launch(supervisorJob + exceptionHandler) {
 
 
-                    } catch (exception: Exception) {
+                val response = if (query.isEmpty())
+                    remoteRepository.getMostPopular(FirstPage)
+                else
+                    remoteRepository.searchTvShows(FirstPage, query)
 
-                        if(exception is NoInternetException){
-                            internetExceptionListener?.invoke()
-                        }
-                    }
+                response.body()!!.results.let {
+                    callback.onResult(it, null, (FirstPage + 1))
 
                 }
 
 
+            }
+
+        } catch (exception: Exception) {
+
+            if (exception is NoInternetException) {
+                internetExceptionListener?.invoke()
+            }
         }
 
-
-
+    }
 
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, MovieResult>) {
+        try {
+            scope.launch(supervisorJob + exceptionHandler) {
 
-        scope.launch(supervisorJob) {
-            try {
                 val key = if (params.key.toInt() > 1) {
                     params.key.toInt() - 1
                 } else null
@@ -66,20 +70,17 @@ class ShowsDataSource(var remoteRepository: RemoteRepository, private var scope:
                 response.body()!!.results.let {
                     callback.onResult(it, key)
                 }
-            } catch (exception: Exception) {
-                if(exception is NoInternetException){
-                    internetExceptionListener?.invoke()
-                }
             }
-
+        } catch (exception: Exception) {
+            if (exception is NoInternetException) {
+                internetExceptionListener?.invoke()
+            }
         }
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, MovieResult>) {
-
-        scope.launch(supervisorJob) {
-            try {
-
+        try {
+            scope.launch(supervisorJob + exceptionHandler) {
                 val response = if (query.isEmpty())
                     remoteRepository.getMostPopular(params.key)
                 else
@@ -90,10 +91,10 @@ class ShowsDataSource(var remoteRepository: RemoteRepository, private var scope:
                 response.body()!!.results.let {
                     callback.onResult(it, key)
                 }
-            } catch (exception: Exception) {
-                if(exception is NoInternetException){
-                    internetExceptionListener?.invoke()
-                }
+            }
+        } catch (exception: Exception) {
+            if (exception is NoInternetException) {
+                internetExceptionListener?.invoke()
             }
         }
     }

@@ -52,14 +52,14 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:paddingBottom="30dp"
+                android:paddingBottom="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/secCard"
+                <RelativeLayout
+                    android:id="@+id/mainImage"
                     android:layout_width="133dp"
                     android:layout_height="178dp"
                     android:backgroundTint="#00000000"
@@ -88,9 +88,9 @@
                         android:contentDescription="image"
                         android:scaleType="fitXY"
                         app:imageUrl="@{movieDetails.poster_path}"
-                        app:isDetails="@{true}" />
+                        />
 
-                </com.google.android.material.card.MaterialCardView>
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/release_date"
@@ -115,7 +115,7 @@
                     android:contentDescription="image"
                     android:scaleType="fitXY"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/secCard"
+                    app:layout_constraintTop_toTopOf="@+id/mainImage"
                     app:movieId="@{String.valueOf(movieDetails.id)}"
                     app:updateSrc="@{viewModel}" />
 
@@ -124,7 +124,7 @@
                     style="@style/caption"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/navdrawer_color"
+                    android:background="@color/toolbar_color"
                     android:gravity="center"
                     android:text="@{movieDetails.original_title}"
                     android:textColor="@color/white"
@@ -180,7 +180,7 @@
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     app:genres="@{movieDetails.genres}"
-                    app:layout_constraintBottom_toBottomOf="@+id/secCard"
+                    app:layout_constraintBottom_toBottomOf="@+id/mainImage"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:text="action" />
@@ -192,7 +192,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:background="@color/navdrawer_color"
+                    android:background="@color/toolbar_color"
                     android:gravity="center"
                     android:text="Overview"
                     android:textColor="@color/white"
@@ -223,7 +223,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:background="@color/navdrawer_color"
+                    android:background="@color/toolbar_color"
                     android:gravity="center"
                     android:text="Collection"
                     android:textColor="@color/white"
@@ -255,7 +255,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:background="@color/navdrawer_color"
+                    android:background="@color/toolbar_color"
                     android:gravity="center"
                     android:text="Similar movies"
                     android:textColor="@color/white"
@@ -264,17 +264,18 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/collectionTxt" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_similar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/similarTitle"
+
                     android:scrollbarFadeDuration="@integer/config_navAnimTime"
                     android:scrollbarThumbVertical="@drawable/scrollbar_style"
-                    android:scrollbars="vertical" />
-
+                    android:scrollbars="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/similarTitle" />
 
 
                 <TextView
@@ -283,11 +284,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:background="@color/navdrawer_color"
+                    android:background="@color/toolbar_color"
                     android:drawableEnd="@drawable/arrow_up_details"
+                    android:drawablePadding="4dp"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:drawablePadding="4dp"
                     android:text="Reviews"
                     android:textColor="@color/white"
                     android:textSize="18sp"
@@ -333,17 +334,33 @@
 
                 <androidx.constraintlayout.widget.Group
                     android:id="@+id/reviewsGroup"
-                    android:visibility="gone"
-                    tools:visibility="visible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:constraint_referenced_ids="reviewsTitle,reviewsConstraint" />
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="reviewsTitle,reviewsConstraint"
+                    tools:visibility="visible" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/similarGroup"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="similarTitle,recyclerview_similar" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
+            <include
+                android:id="@+id/customDialogLayout"
+                layout="@layout/error_dialog"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/firstContainer" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </ScrollView>
 
 

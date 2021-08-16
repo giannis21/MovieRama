@@ -4,169 +4,152 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
-            type="androidx.lifecycle.ViewModel"/>
+            type="androidx.lifecycle.ViewModel" />
 
         <variable
             name="currentSearchName"
-            type="String"/>
+            type="String" />
 
-         <variable
-             name="movie"
-             type="com.example.movierama.data.movie.MovieResult" />
+        <variable
+            name="movie"
+            type="com.example.movierama.data.movie.MovieResult" />
     </data>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/bottomcircled_bordered"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/main_item_layout"
+        <TextView
+            android:id="@+id/name"
+            style="@style/caption_bold"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            android:background="@drawable/ripple_selector"
-            android:clickable="true"
-            android:focusable="true"
+            android:layout_height="23sp"
+            android:background="@color/toolbar_color"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:currentSearchName="@{currentSearchName}"
+            app:spannableInSearch="@{movie.original_title}"
+            tools:text="title" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginBottom="14dp"
+            android:background="@color/white"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/bottomcircled_bordered"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/ripple_selector"
+                android:backgroundTint="@color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:foregroundTint="@color/white"
+                app:imageUrl="@{movie.poster_path}"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent" />
 
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+
+                android:layout_width="90sp"
+                android:layout_height="110sp"
+                android:layout_centerInParent="true"
+
+                app:layout_constraintBottom_toTopOf="@+id/image"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <TextView
+                android:id="@+id/release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/circled_bordered"
+                android:paddingHorizontal="5dp"
+                android:text="@{movie.release_date}"
+                android:textColor="@color/white"
+                tools:text="12-3-2021" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/circled_bordered"
+                android:clipToPadding="false"
+                android:elevation="30dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="2dp">
+
+                <ImageView
+                    android:id="@+id/star"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="im"
+                    android:src="@drawable/star" />
 
                 <TextView
-                    android:id="@+id/name"
-                    android:layout_width="match_parent"
-                    android:layout_height="23sp"
-                    android:background="@color/navdrawer_color"
-                    android:gravity="center"
+                    android:id="@+id/rate_average"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@+id/star"
+                    android:text="@{Double.toString(movie.vote_average)}"
+                    android:textColor="@android:color/white"
+                    tools:text="9.4" />
+            </RelativeLayout>
 
-                    android:textSize="14sp"
-                    tools:text="dddddddd"
-                    style="@style/caption_bold"
-                    app:currentSearchName="@{currentSearchName}"
-                    app:spannableInSearch="@{movie.original_title}"
-                    android:textColor="@color/white" />
+            <ImageView
+                android:id="@+id/favorite"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="14dp"
+                android:contentDescription="im"
+                android:src="@drawable/ic_baseline_favorite_border_24"
+                app:movieId="@{String.valueOf(movie.id)}"
+                app:updateSrc="@{viewModel}" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginHorizontal="4dp"
-                    android:layout_marginBottom="14dp"
-                    android:background="@color/white"
-                    android:gravity="center"
-
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0">
-
-                    <ImageView
-                        android:id="@+id/image"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        app:imageUrl="@{movie.poster_path}"
-                        app:isDetails="@{false}"
-                        android:background="@drawable/ripple_selector"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:backgroundTint="@color/white"
-                        android:foregroundTint="@color/white"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                       />
-
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-
-                        android:layout_width="90sp"
-                        android:layout_height="110sp"
-                        android:layout_centerInParent="true"
-
-                        app:layout_constraintBottom_toTopOf="@+id/image"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0"
-                        tools:layout_editor_absoluteX="0dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:id="@+id/release_date"
-                        android:paddingHorizontal="5dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:textColor="@color/white"
-                        tools:text="12-3-2021"
-                        android:background="@drawable/circled_bordered"
-                        android:text="@{movie.release_date}" />
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:layout_toStartOf="@+id/favorite"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/circled_bordered"
-                        android:clipToPadding="false"
-                        android:elevation="30dp"
-                        android:paddingStart="5dp"
-                        android:paddingEnd="8dp"
-                        android:paddingBottom="2dp">
-
-                        <ImageView
-                            android:id="@+id/star"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="im"
-                            android:src="@drawable/star" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:id="@+id/rate_average"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_toEndOf="@+id/star"
-                            android:text="@{Double.toString(movie.vote_average)}"
-                            android:textColor="@android:color/white"
-                            tools:text="9.4" />
-                    </RelativeLayout>
-                    <ImageView
-                        android:id="@+id/favorite"
-                        app:updateSrc="@{viewModel}"
-                        app:movieId="@{String.valueOf(movie.id)}"
-                        android:layout_marginEnd="14dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:contentDescription="im"
-                        android:src="@drawable/ic_baseline_favorite_border_24" />
-
-                </RelativeLayout>
+        </RelativeLayout>
 
 
-            </LinearLayout>
+    </LinearLayout>
 
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

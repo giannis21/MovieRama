@@ -7,7 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="navdrawer_color">#2A2E43</color>
+    <color name="toolbar_color">#2A2E43</color>
     <color name="navDrawerColor">#9E000000</color>
     <color name="chipChecked">#AC0D43</color>
     <color name="colorPrimary">#393434</color>
