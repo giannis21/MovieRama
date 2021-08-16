@@ -34,7 +34,7 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
     var currentSimilarObj = MutableLiveData<Movies?>(null)
     var currentReviewsObj = MutableLiveData<Reviews?>(null)
     var favorites: LiveData<List<MovieFav>>
-
+    var isFavoriteDetails=MutableLiveData<Boolean>(false)
     var showLoader= MutableLiveData<Boolean?>(null)
     val exceptionHandler = CoroutineExceptionHandler { _, _ ->
         // dialog.hideLoadingDialog()
@@ -139,9 +139,11 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
 
                 favorites.value?.firstOrNull { it.id == id }?.let {
                     local_repository.deleteFavorite(moviefav = MovieFav(id = id))
+                    isFavoriteDetails.postValue(true)
                 } ?: kotlin.run {
                     inserted = true
                     local_repository.addFavorite(moviefav = MovieFav(id = id))
+                    isFavoriteDetails.postValue(false)
                 }
 
             }.onFailure {

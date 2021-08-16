@@ -246,7 +246,7 @@ object bindingAdapters {
     @BindingAdapter("reviews")
     @JvmStatic
     fun reviews(view: LinearLayout, reviews: List<Result> ?=null ) {
-
+        view.removeAllViews()
         try {
             reviews?.take(2)?.let {
                 if(reviews.isNotEmpty()){

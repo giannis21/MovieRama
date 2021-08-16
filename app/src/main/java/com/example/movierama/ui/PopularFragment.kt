@@ -82,7 +82,7 @@ class PopularFragment : Fragment(), ItemHandler {
             it?.let {
                 adapter.submitList(it)
 
-                if(adapter.itemCount > 0)
+                if(adapter.currentList?.size ?: 0  > 0)
                     binding.noInternetMessage.visibility=View.GONE
             }
         })

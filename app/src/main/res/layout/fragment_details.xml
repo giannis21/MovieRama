@@ -26,7 +26,7 @@
 
         <variable
             name="viewModel"
-            type="androidx.lifecycle.ViewModel" />
+            type="com.example.movierama.viewmodels.SharedViewModel" />
 
     </data>
 
@@ -47,7 +47,7 @@
                 android:id="@+id/firstContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bottomcircled_bordered"
+
                 android:backgroundTint="@color/black"
                 android:clickable="true"
                 android:focusable="true"
@@ -172,12 +172,12 @@
 
                 <TextView
                     android:id="@+id/genres"
-                    style="@style/caption"
+                    style="@style/caption_bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:background="@color/transparentGray"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="15sp"
                     app:genres="@{movieDetails.genres}"
                     app:layout_constraintBottom_toBottomOf="@+id/secCard"
@@ -211,7 +211,7 @@
                     android:background="@color/transparentGray"
                     android:gravity="center"
                     android:text="@{movieDetails.overview}"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -242,7 +242,7 @@
                     android:layout_margin="10dp"
                     android:background="@color/transparentGray"
                     android:gravity="center"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="15sp"
                     app:collection="@{movieDetails.belongs_to_collection}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -264,20 +264,18 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/collectionTxt" />
-
-                <LinearLayout
-                    android:id="@+id/similarMoviesContainer"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_similar"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_margin="10dp"
-                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/similarTitle"
-                    app:similarMovies="@{movies.results}">
+                    android:scrollbarFadeDuration="@integer/config_navAnimTime"
+                    android:scrollbarThumbVertical="@drawable/scrollbar_style"
+                    android:scrollbars="vertical" />
 
 
-                </LinearLayout>
 
                 <TextView
                     android:id="@+id/reviewsTitle"
@@ -288,14 +286,15 @@
                     android:background="@color/navdrawer_color"
                     android:drawableEnd="@drawable/arrow_up_details"
                     android:gravity="center"
-
+                    android:padding="3dp"
+                    android:drawablePadding="4dp"
                     android:text="Reviews"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="italic"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/similarMoviesContainer" />
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerview_similar" />
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout

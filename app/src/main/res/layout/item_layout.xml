@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-
+                android:background="@drawable/bottomcircled_bordered"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +62,9 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
-                    android:background="@drawable/bottomcircled_bordered"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginBottom="14dp"
+                    android:background="@color/white"
                     android:gravity="center"
 
                     app:layout_constraintBottom_toBottomOf="parent"
