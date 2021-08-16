@@ -8,4 +8,6 @@
     <string name="search_movies">Search movies..</string>
     <string name="movie_detail">Movie details</string>
     <string name="connectivity_problem_npull_down_to_refresh">Connectivity problem\npull down to refresh</string>
+    <string name="show_reviews">Show reviews</string>
+    <string name="hide_reviews">Hide reviews</string>
 </resources>

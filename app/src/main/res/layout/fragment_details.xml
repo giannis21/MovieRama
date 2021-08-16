@@ -264,17 +264,17 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/collectionTxt" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_similar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/similarTitle"
                     android:scrollbarFadeDuration="@integer/config_navAnimTime"
                     android:scrollbarThumbVertical="@drawable/scrollbar_style"
-                    android:scrollbars="vertical" />
-
+                    android:scrollbars="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/similarTitle" />
 
 
                 <TextView
@@ -285,9 +285,9 @@
                     android:layout_marginTop="32dp"
                     android:background="@color/navdrawer_color"
                     android:drawableEnd="@drawable/arrow_up_details"
+                    android:drawablePadding="4dp"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:drawablePadding="4dp"
                     android:text="Reviews"
                     android:textColor="@color/white"
                     android:textSize="18sp"
@@ -333,11 +333,17 @@
 
                 <androidx.constraintlayout.widget.Group
                     android:id="@+id/reviewsGroup"
-                    android:visibility="gone"
-                    tools:visibility="visible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:constraint_referenced_ids="reviewsTitle,reviewsConstraint" />
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="reviewsTitle,reviewsConstraint"
+                    tools:visibility="visible" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/similarGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="similarTitle,recyclerview_similar" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -51,26 +51,25 @@ class PopularFragment : Fragment(), ItemHandler {
         adapter = PagedItemAdapter(requireContext(), itemHandler, viewModel = viewModel)
         binding.recyclerviewPopular.adapter = adapter
 
-        MainActivity.internetExceptionListener ={
-            binding.noInternetMessage.visibility=View.VISIBLE
+        MainActivity.internetExceptionListener = {
+            binding.noInternetMessage.visibility = View.VISIBLE
         }
 
 
         observeViewmodel()
         binding.swipeRefreshLayout.setOnRefreshListener {
-
-            viewModel.itemPagedList?.value?.dataSource?.invalidate()
-            Handler(Looper.getMainLooper()).postDelayed({
-                try {
+            try {
+                viewModel.itemPagedList?.value?.dataSource?.invalidate()
+                Handler(Looper.getMainLooper()).postDelayed({
                     binding.swipeRefreshLayout.isRefreshing = false
-                } catch (e: Exception) {
-                    println(e)
-                }
-            }, 1000)
+                }, 1000)
+            } catch (e: Exception) {
+                println(e)
+            }
         }
     }
 
-    fun updateSearch(query:String){
+    fun updateSearch(query: String) {
         viewModel.searchTvShows(query.trim())
         adapter.setQuery(query)
         adapter.currentList?.dataSource?.invalidate()
@@ -82,13 +81,15 @@ class PopularFragment : Fragment(), ItemHandler {
             it?.let {
                 adapter.submitList(it)
 
-                if(adapter.currentList?.size ?: 0  > 0)
-                    binding.noInternetMessage.visibility=View.GONE
+//                if (adapter.currentList?.size ?: 0 > 0)
+//                    binding.noInternetMessage.visibility = View.GONE
             }
         })
 
 
-        viewModel.favorites.observe(viewLifecycleOwner, Observer { //when the favorites are updated i want to notify the adapter but not the first time
+        viewModel.favorites.observe(
+            viewLifecycleOwner,
+            Observer { //when the favorites are updated i want to notify the adapter but not the first time
                 //that's why i check if favIsAdded is not null
 
                 viewModel.favIdDbChanged.value.let { movieId ->
@@ -100,9 +101,15 @@ class PopularFragment : Fragment(), ItemHandler {
 
 
                         if (viewModel.favIdAdded)
-                            (activity as MainActivity).showBanner("the movie has been added to the favorites!", true)
+                            (activity as MainActivity).showBanner(
+                                "the movie has been added to the favorites!",
+                                true
+                            )
                         else
-                            (activity as MainActivity).showBanner("the movie has been removed from the favorites!", true)
+                            (activity as MainActivity).showBanner(
+                                "the movie has been removed from the favorites!",
+                                true
+                            )
 
                     }
 
@@ -111,8 +118,12 @@ class PopularFragment : Fragment(), ItemHandler {
     }
 
     override fun onClick(id: String) {
-        if(isInternetAvailable(requireContext()))
-            findNavController().navigate(PopularFragmentDirections.actionPopularFragmentToDetailsFragment(id))
+        if (isInternetAvailable(requireContext()))
+            findNavController().navigate(
+                PopularFragmentDirections.actionPopularFragmentToDetailsFragment(
+                    id
+                )
+            )
         else
             (activity as MainActivity).showBanner("No internet connection!")
     }
@@ -121,5 +132,9 @@ class PopularFragment : Fragment(), ItemHandler {
         viewModel.addFavorite(id)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.favIdDbChanged.value = null
+    }
 
 }

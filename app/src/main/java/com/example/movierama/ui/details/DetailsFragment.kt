@@ -12,25 +12,11 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.movierama.MainActivity
 import com.example.movierama.R
-import com.example.movierama.data.fav_movies.MovieFav
 import com.example.movierama.databinding.FragmentDetailsBinding
-import com.example.movierama.ui.bindingAdapters.updateSrc
 import com.example.movierama.viewmodels.SharedViewModel
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [DetailsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DetailsFragment : Fragment() {
 
     lateinit var viewModel:SharedViewModel
@@ -55,20 +41,21 @@ class DetailsFragment : Fragment() {
         viewModel.getMovieDetails(args.id)
         observeViewmodel()
 
-
-
         val layoutParams = ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 700)
         binding.NestedScrollView.layoutParams = layoutParams
+
         binding.reviewsTitle.setOnClickListener {
             if(binding.NestedScrollView.isGone){
                 binding.NestedScrollView.visibility=View.VISIBLE
+
                 binding.reviewsTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_bottom_details, 0)
                 binding.ScrollView.post(Runnable { binding.ScrollView.fullScroll(ScrollView.FOCUS_DOWN) })
-                binding.reviewsTitle.text= "hide reviews"
+                binding.reviewsTitle.text= getString(R.string.hide_reviews)
             }else{
                 binding.NestedScrollView.visibility=View.GONE
+
                 binding.reviewsTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_up_details, 0)
-                binding.reviewsTitle.text= "show reviews"
+                binding.reviewsTitle.text= getString(R.string.show_reviews)
             }
         }
 
@@ -98,6 +85,20 @@ class DetailsFragment : Fragment() {
             }
         })
 
+        viewModel.favorites.observe(viewLifecycleOwner, Observer { //when the favorites are updated i want to notify the adapter but not the first time
+            //that's why i check if favIsAdded is not null
+
+            viewModel.favIdDbChanged.value?.let { _ ->
+
+                    viewModel.favIdDbChanged.value = null
+                    if (viewModel.favIdAdded)
+                        (activity as MainActivity).showBanner("the movie has been added to the favorites!", true)
+                    else
+                        (activity as MainActivity).showBanner("the movie has been removed from the favorites!", true)
+
+            }
+        })
+
         viewModel.currentReviewsObj.observe(viewLifecycleOwner, Observer {
             it?.let {
                 binding.reviews = it
@@ -121,5 +122,10 @@ class DetailsFragment : Fragment() {
         findNavController().navigateUp()
     }
 
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.favIdDbChanged.value=null
+    }
 
 }
