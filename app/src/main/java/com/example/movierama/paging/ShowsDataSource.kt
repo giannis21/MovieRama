@@ -17,7 +17,7 @@ class ShowsDataSource(
     PageKeyedDataSource<Int, MovieResult>() {
 
     val exceptionHandler = CoroutineExceptionHandler { _, _ ->
-        internetExceptionListener?.invoke()
+        //internetExceptionListener?.invoke()
     }
     var FirstPage = 1
     private var supervisorJob = SupervisorJob()
