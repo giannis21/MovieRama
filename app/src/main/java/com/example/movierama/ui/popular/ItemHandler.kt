@@ -1,4 +1,4 @@
-package com.example.movierama.ui
+package com.example.movierama.ui.popular
 
 interface ItemHandler {
     fun onClick(id:String)

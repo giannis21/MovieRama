@@ -21,19 +21,21 @@ import com.example.movierama.MyApplication
 import com.example.movierama.R
 import com.example.movierama.databinding.FragmentDetailsBinding
 import com.example.movierama.viewmodels.SharedViewModel
+import javax.inject.Inject
 
 class DetailsFragment : Fragment() {
 
+    @Inject
     lateinit var viewModel:SharedViewModel
+
     lateinit var binding: FragmentDetailsBinding
-    val args: DetailsFragmentArgs by navArgs()
+    private val args: DetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel=(activity as MainActivity).viewModel
-
+        //viewModel=(activity as MainActivity).viewModel
         binding = FragmentDetailsBinding.inflate(inflater, container, false)
         binding.viewModel=viewModel
         binding.lifecycleOwner = this
@@ -44,8 +46,14 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getMovieDetails(args.id)
+        setUpViews()
         observeViewmodel()
 
+    }
+
+    private fun setUpViews() {
+
+        //i set static height in nestedScrollview dynamically
         val layoutParams = ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 700)
         binding.NestedScrollView.layoutParams = layoutParams
 
@@ -53,33 +61,31 @@ class DetailsFragment : Fragment() {
             if(binding.NestedScrollView.isGone){
                 binding.NestedScrollView.visibility=View.VISIBLE
 
-                binding.reviewsTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_bottom_details, 0)
-                binding.ScrollView.post(Runnable { binding.ScrollView.fullScroll(ScrollView.FOCUS_DOWN) })
-                binding.reviewsTitle.text= getString(R.string.hide_reviews)
+                binding.reviewsTitle.apply {   //changing text and arrow direction when user clicks the textview
+                    setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_bottom_details, 0)
+                    text= getString(R.string.hide_reviews)
+                }
+
+                binding.ScrollView.post(Runnable { binding.ScrollView.fullScroll(ScrollView.FOCUS_DOWN) })  //when the view is opened i scroll to the bottom
+
             }else{
                 binding.NestedScrollView.visibility=View.GONE
 
-                binding.reviewsTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_up_details, 0)
-                binding.reviewsTitle.text= getString(R.string.show_reviews)
+                binding.reviewsTitle.apply {
+                    setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_up_details, 0)
+                    text= getString(R.string.show_reviews)
+                }
+
             }
         }
 
         binding.favorite.setOnClickListener {
             viewModel.addFavorite(args.id)
         }
-
-
     }
-
-
 
     private fun observeViewmodel() {
 
-        viewModel.currentDetailObj.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                binding.movieDetails = it
-            }
-        })
         viewModel.currentDetailObj.observe(viewLifecycleOwner, Observer {
             it?.let {
                 binding.movieDetails = it
@@ -94,60 +100,53 @@ class DetailsFragment : Fragment() {
             }
         })
 
-        viewModel.favorites.observe(
-            viewLifecycleOwner,
-            Observer { //when the favorites are updated i want to notify the adapter but not the first time
-                //that's why i check if favIsAdded is not null
+        viewModel.favorites.observe(viewLifecycleOwner, Observer { //when the favorites are updated i want to notify the adapter but not the first time
+                                                                  //that's why i check if favIsAdded is not null
 
-                viewModel.favIdDbChanged.value?.let { _ ->
-
-                    viewModel.favIdDbChanged.value = null
+                viewModel.favIdDbChanged.value?.let {
 
                     if (viewModel.favIdAdded)
-                        (activity as MainActivity).showBanner(
-                            "the movie has been added to the favorites!",
-                            true
-                        )
+                        (activity as MainActivity).showBanner("the movie added to the favorites!", true)
                     else
-                        (activity as MainActivity).showBanner(
-                            "the movie has been removed from the favorites!",
-                            true
-                        )
+                        (activity as MainActivity).showBanner("the movie removed from the favorites!", true)
 
+                    viewModel.favIdDbChanged.postValue(null)
                 }
             })
 
+        //once the api calls finish i am observing the object and bind it to the layout
         viewModel.currentReviewsObj.observe(viewLifecycleOwner, Observer {
             it?.let {
                 binding.reviews = it
             }
         })
 
+        //if error is true i change the visibilty of the layout which forces the user to go back
         viewModel.error.observe(viewLifecycleOwner, Observer {
             if(it){
-                binding.customDialogLayout.visibility=View.VISIBLE
+                binding.customDialogLayout.apply {
+                    visibility=View.VISIBLE
+                }
+
                 binding.firstContainer.visibility=View.INVISIBLE
                 binding.customDialogLayout.findViewById<Button>(R.id.dialog_okayBtn).setOnClickListener {
                     findNavController().navigateUp()
                 }
             }
+            viewModel.error.postValue(false)
         })
 
         viewModel.currentSimilarObj.observe(viewLifecycleOwner, Observer {
             it?.let {
 
-                val manager = LinearLayoutManager(
-                    requireContext(),
-                    LinearLayoutManager.HORIZONTAL,
-                    false
-                )
-                binding.recyclerviewSimilar.layoutManager = manager
-                binding.recyclerviewSimilar.setHasFixedSize(true)
-
-                val adapter = SimilarMoviesAdapter(this.requireContext(), it.results)
-                binding.recyclerviewSimilar.adapter = adapter
+                val manager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                binding.recyclerviewSimilar.apply {
+                    layoutManager = manager
+                    setHasFixedSize(true)
+                    val similarMoviesAdapter = SimilarMoviesAdapter(context, it.results)
+                    adapter = similarMoviesAdapter
+                }
                 binding.similarGroup.visibility = View.VISIBLE
-
             }
         })
     }
@@ -156,12 +155,6 @@ class DetailsFragment : Fragment() {
         findNavController().navigateUp()
     }
 
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        viewModel.favIdDbChanged.value=null
-        viewModel.error.value=false
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

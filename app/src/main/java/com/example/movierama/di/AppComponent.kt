@@ -2,7 +2,7 @@ package com.example.movierama.di
 
 import android.content.Context
 import com.example.movierama.MainActivity
-import com.example.movierama.ui.PopularFragment
+import com.example.movierama.ui.popular.PopularFragment
 import com.example.movierama.ui.details.DetailsFragment
 import dagger.BindsInstance
 import dagger.Component

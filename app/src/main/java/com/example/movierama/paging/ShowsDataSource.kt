@@ -25,12 +25,12 @@ class ShowsDataSource(
        if(e is NoInternetException)
           apiCallState.postValue(ApiCallState.NoInternetErrorMessage(context.getString(R.string.connectivity_problem_npull_down_to_refresh)))
     }
+
     private val exceptionHandler = CoroutineExceptionHandler { _, e ->
         println(e.message)
     }
 
     private var FirstPage = 1
-    private var supervisorJob = SupervisorJob()
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
@@ -91,8 +91,4 @@ class ShowsDataSource(
 
     }
 
-    override fun invalidate() {
-        super.invalidate()
-        //supervisorJob.cancelChildren()
-    }
 }

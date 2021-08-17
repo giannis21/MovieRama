@@ -1,9 +1,8 @@
 package com.example.movierama.di
 
 import android.content.Context
-import com.example.movierama.MovieDao
+import com.example.movierama.data.database.MovieDao
 import com.example.movierama.MovieRoomDatabase
-import com.example.movierama.MyApplication
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -19,7 +18,7 @@ class DatabaseModule{
 
     @Singleton
     @Provides
-   internal fun getMovieDao(movieRoomDatabase: MovieRoomDatabase): MovieDao{
+   internal fun getMovieDao(movieRoomDatabase: MovieRoomDatabase): MovieDao {
        return movieRoomDatabase.movieDao()
    }
 }

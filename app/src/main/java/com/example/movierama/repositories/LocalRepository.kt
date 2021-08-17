@@ -1,17 +1,14 @@
 package com.example.movierama
 
 
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
+import com.example.movierama.data.database.MovieDao
 import com.example.movierama.data.fav_movies.MovieFav
 import javax.inject.Inject
 
 
-class Local_repository @Inject constructor(val movieDao: MovieDao) {
+class LocalRepository @Inject constructor(private val movieDao: MovieDao) {
 
-
-    //val countOfNowPLaying = movieDao.countOfNowPLaying()
     fun getFavorites():  LiveData<List<MovieFav>>  {
         return movieDao.get_favorites()
     }

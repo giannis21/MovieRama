@@ -12,4 +12,5 @@
     <string name="hide_reviews">Hide reviews</string>
     <string name="oups_there_was_a_problem_with_the_api_call_try_again">Oups, there was a problem with the api call! Try again</string>
     <string name="reviews">Reviews</string>
+    <string name="okay">okay</string>
 </resources>

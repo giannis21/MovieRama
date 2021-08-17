@@ -9,7 +9,6 @@
     <RelativeLayout
         android:id="@+id/no_internet_message"
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,7 +19,6 @@
             android:id="@+id/internetImage"
             android:layout_width="match_parent"
             android:layout_height="96dp"
-
             android:layout_gravity="center"
             android:layout_marginTop="6dp"
             android:gravity="center"

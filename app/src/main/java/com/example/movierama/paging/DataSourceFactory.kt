@@ -15,10 +15,8 @@ class DataSourceFactory(var remoteRepository: RemoteRepository, private var quer
         return ShowsDataSource(remoteRepository,CoroutineScope(Dispatchers.Default),query,context = context,apiCallState)
     }
 
-
-    fun updateQuery(query: String) {
-        this.query = query
+    fun updateQuery(query: String) { //this function justs update the query so when create
+        this.query = query          // is called it passes the updated query and it fetches from the api the expected results
     }
-
 
 }

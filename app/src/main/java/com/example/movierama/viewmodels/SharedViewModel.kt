@@ -18,13 +18,12 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import retrofit2.Response
 import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class SharedViewModel @Inject constructor(var remoteRepository: RemoteRepository,var localRepository: Local_repository, var context: Context) : ViewModel() {
+@Singleton
+class SharedViewModel @Inject constructor(var remoteRepository: RemoteRepository, var localRepository: LocalRepository, var context: Context) : ViewModel() {
 
     var job: Job = SupervisorJob()
-
-    var loading = MutableLiveData<Boolean>(false)
 
     var apiCallState = MutableLiveData<ApiCallState>()
     var error = MutableLiveData<Boolean>(false)
@@ -37,13 +36,13 @@ class SharedViewModel @Inject constructor(var remoteRepository: RemoteRepository
     var isFavoriteDetails = MutableLiveData<Boolean>(false)
     var showLoader = MutableLiveData<Boolean?>(null)
 
-    val exceptionHandler = CoroutineExceptionHandler { _, e ->
+    private val exceptionHandler = CoroutineExceptionHandler { _, e ->
         println("Error ${e.message}")
     }
 
     var itemPagedList: LiveData<PagedList<MovieResult>>? = null
 
-    val config = PagedList.Config.Builder()
+    private val config = PagedList.Config.Builder()
         .setPageSize(20)
         .setEnablePlaceholders(false)
         .build()
@@ -62,13 +61,13 @@ class SharedViewModel @Inject constructor(var remoteRepository: RemoteRepository
 
 
     fun getMovieDetails(id: String) {
-        showLoader.postValue(true)   //i show a generic loader until the api call finish
+        showLoader.postValue(true)   //i show a generic loader until the main api call finish
 
         viewModelScope.launch {
             getDetailsFlow(id)
                 .catch {
 
-                    error.postValue(true)
+                    error.postValue(true)    //i observe this value and display a layout which forces user to go back
                     showLoader.postValue(false)
 
                 }.flowOn(Dispatchers.IO)
@@ -90,13 +89,16 @@ class SharedViewModel @Inject constructor(var remoteRepository: RemoteRepository
 
 
     private suspend fun getNonCriticalInfo(id: String) {
+
+        //i launch a coroutine with job which is SupervisorJob,so if an api call fails the other wont stop
+
         viewModelScope.launch {
             launch(job) {
                 getSimilarFlow(id).catch { e ->
                     println(e.localizedMessage)
                 }.collect { similar ->
                     if (similar.isSuccessful)
-                        currentSimilarObj.postValue(similar.body())
+                        currentSimilarObj.postValue(similar.body())  //i set the result to the object in order to bind it in the layout from the fragment(observing)
                 }
             }
 
@@ -115,15 +117,15 @@ class SharedViewModel @Inject constructor(var remoteRepository: RemoteRepository
 
 
 
-    fun getDetailsFlow(id: String): Flow<Response<Detail_Movie>> = flow {
+    private fun getDetailsFlow(id: String): Flow<Response<Detail_Movie>> = flow {
         emit(remoteRepository.getMovieDetails(id))
     }
 
-    fun getReviewsFlow(id: String): Flow<Response<Reviews>> = flow {
+    private fun getReviewsFlow(id: String): Flow<Response<Reviews>> = flow {
         emit(remoteRepository.getMovieReviews(id))
     }
 
-    fun getSimilarFlow(id: String): Flow<Response<Movies>> = flow {
+    private fun getSimilarFlow(id: String): Flow<Response<Movies>> = flow {
         emit(remoteRepository.getSimilarMovies(id, 1))
     }
 
@@ -142,39 +144,11 @@ class SharedViewModel @Inject constructor(var remoteRepository: RemoteRepository
                     isFavoriteDetails.postValue(false)
                 }
 
-            }.onFailure {
-                loading.postValue(false)
             }.onSuccess {
-                favIdAdded = inserted
+                favIdAdded = inserted  //i use this boolean in order to decide what message to show with banner layout(if it is added or removed)
                 favIdDbChanged.postValue(id)
-
             }
         }
     }
-
-
-
-
-   /* private fun getSimilar(id: String) {
-        viewModelScope.launch(Dispatchers.IO + job) {
-            getSimilarFlow(id).catch { e ->
-                println("call failed(similar) ${e.localizedMessage}")
-            }.collect { similar ->
-                if (similar.isSuccessful)
-                    currentSimilarObj.postValue(similar.body())
-            }
-        }
-    }
-
-    private fun getReviews(id: String) {
-        viewModelScope.launch(Dispatchers.IO + job) {
-            getReviewsFlow("123123123").catch { e ->
-                println("call failed(reviews) ${e.localizedMessage}")
-            }.collect { reviews ->
-                if (reviews.isSuccessful)
-                    currentReviewsObj.postValue(reviews.body())
-            }
-        }
-    } */
 
 }

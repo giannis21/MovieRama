@@ -23,7 +23,6 @@
         android:id="@+id/loaderFrameLayout"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
-
         android:layout_height="match_parent"
         android:visibility="visible" />
 
@@ -118,14 +117,6 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.36" />
 
-<!--    <include-->
-<!--        android:id="@+id/motionLayoutId"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/guidelineHorizontal"-->
-<!--        layout="@layout/motion_layout_side_navigation"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"/>-->
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

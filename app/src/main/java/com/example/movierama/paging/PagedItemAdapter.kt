@@ -3,25 +3,18 @@ package com.example.movierama.paging
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModel
-import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movierama.BR
 import com.example.movierama.R
 import com.example.movierama.data.movie.MovieResult
 import com.example.movierama.databinding.ItemLayoutBinding
-import com.example.movierama.paging.DiffCallback
-import com.example.movierama.ui.ItemHandler
-
-import java.util.*
+import com.example.movierama.ui.popular.ItemHandler
 
 
-class PagedItemAdapter(var context: Context, var itemHandler: ItemHandler?, var query: String = "",var viewModel:ViewModel) : PagedListAdapter<MovieResult, PagedItemAdapter.ItemViewHolder>(
+class PagedItemAdapter(var context: Context, var itemHandler: ItemHandler?, var query: String = "", var viewModel:ViewModel) : PagedListAdapter<MovieResult, PagedItemAdapter.ItemViewHolder>(
     DiffCallback
 ) {
 
@@ -41,7 +34,6 @@ class PagedItemAdapter(var context: Context, var itemHandler: ItemHandler?, var 
 
         // This is important, because it forces the data binding to execute immediately,
         // which allows the RecyclerView to make the correct view size measurements
-
         holder.itemLayoutBinding.executePendingBindings()
 
         holder.itemLayoutBinding.image.setOnClickListener {
@@ -54,12 +46,9 @@ class PagedItemAdapter(var context: Context, var itemHandler: ItemHandler?, var 
 
     class ItemViewHolder(var itemLayoutBinding: ItemLayoutBinding) : RecyclerView.ViewHolder(itemLayoutBinding.root)
 
-    @JvmName("setQuery1")
+    @JvmName("set_query")
     fun setQuery(query: String){
         this.query=query
     }
-
-
-
 
 }

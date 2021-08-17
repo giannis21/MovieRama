@@ -1,4 +1,4 @@
-package com.example.movierama
+package com.example.movierama.data.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -18,19 +18,5 @@ interface MovieDao {
 
     @Query("SELECT * from fav_table")
     fun get_favorites(): LiveData<List<MovieFav>>
-
-//    @Query("SELECT * FROM now_playing where page = :page AND currentFragment='nowPlaying'")
-//    suspend fun get_now_playing_per_page(page: Int): NowPlaying
-//
-//
-//    @Query("SELECT count(*) from now_playing")
-//    fun isDbEmpty(): Int
-//
-//    @Query("DELETE FROM now_playing ")
-//    suspend fun deleteAllFromNowPlaying()
-
-
-
-
 
 }

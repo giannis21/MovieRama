@@ -12,7 +12,6 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
@@ -23,9 +22,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.movierama.databinding.ActivityMainBinding
-import com.example.movierama.network.NetworkConnectionIncterceptor
 import com.example.movierama.ui.details.DetailsFragment
-import com.example.movierama.ui.PopularFragment
+import com.example.movierama.ui.popular.PopularFragment
 import com.example.movierama.viewmodels.SharedViewModel
 import com.google.android.material.card.MaterialCardView
 import javax.inject.Inject
@@ -33,8 +31,6 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
- //   lateinit var viewModel: SharedViewModel
-   // private lateinit var viewModelFactory: ViewModelFactory
     private var searchcontainerOpened = false
 
     @Inject
@@ -50,24 +46,33 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        binding.lifecycleOwner = this
         window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
-
         setStatusBarColor()
 
+        setUpViews()
+        observeViewmodel()
+    }
 
-    //    val networkConnectionIncterceptor = this.applicationContext?.let { NetworkConnectionIncterceptor(it) }
-       // val webService = ApiClient(networkConnectionIncterceptor!!)
-      //  val repository = RemoteRepository(webService)
-      //  viewModelFactory = ViewModelFactory(repository, this)
-     //   viewModel = ViewModelProvider(this, viewModelFactory).get(SharedViewModel::class.java)
+    private fun observeViewmodel() {
+        //this is triggered and shows the loader until the main api call finish. When it does, it hides it
+        viewModel.showLoader.observe(this, Observer {
+            it?.let {
+                if (it)
+                    showGenericLoader()
+                else
+                    hideGenericLoader()
+            }
+        })
+    }
 
+    private fun setUpViews() {
         binding.searchHereEdittext.doOnTextChanged { text, _, _, _ ->
             val currentFragment = getCurrentFragment()
             if (currentFragment is PopularFragment)
                 currentFragment.updateSearch(text.toString())
         }
 
+        //when clicking the search icon either i show the search inputfield or i hide it
         binding.searchImg.setOnClickListener {
             if (getCurrentFragment() is PopularFragment) {
                 if (searchcontainerOpened)
@@ -80,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.backBtn.setOnClickListener {
             val currentFragment = getCurrentFragment()
-            if (currentFragment is DetailsFragment)
+            if (currentFragment is DetailsFragment)  //if i am currently in DetailsFragment the i can use its functions
                 currentFragment.goBack()
         }
 
@@ -106,16 +111,6 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
-
-
-        viewModel.showLoader.observe(this, Observer {
-            it?.let {
-                if (it)
-                    showGenericLoader()
-                else
-                    hideGenericLoader()
-            }
-        })
     }
 
     private fun getCurrentFragment(): Fragment? {
@@ -125,10 +120,8 @@ class MainActivity : AppCompatActivity() {
     private fun showGenericLoader() {
         val view: View = LayoutInflater.from(this).inflate(R.layout.generic_loader_layout, null)
         runOnUiThread {
-
             binding.loaderFrameLayout.let { cLayout ->
                 cLayout.addView(view, 0)
-                cLayout.bringToFront()
             }
         }
     }
@@ -143,10 +136,10 @@ class MainActivity : AppCompatActivity() {
     fun showBanner(value: String, success: Boolean = false) {
         val view: View = LayoutInflater.from(this).inflate(R.layout.banner_layout, null)
 
-
         runOnUiThread {
 
-            binding.frameLayout.let { cLayout ->
+            binding.frameLayout.let { cLayout -> // i add in the frameLayout of Mainactivity the bannerLayout and after 3 seconds i remove it
+                cLayout.removeAllViews()
                 cLayout.addView(view, 0)
                 cLayout.bringToFront()
 
@@ -158,20 +151,11 @@ class MainActivity : AppCompatActivity() {
                 BannerTxtV.text = value
 
                 if (!success) {
-                    cardView.backgroundTintList = ContextCompat.getColorStateList(
-                        this,
-                        android.R.color.holo_red_light
-                    )
-                    imageView.background = ContextCompat.getDrawable(
-                        this,
-                        R.drawable.ic_baseline_close_24
-                    )
+                    cardView.backgroundTintList = ContextCompat.getColorStateList(this, android.R.color.holo_red_light)
+                    imageView.background = ContextCompat.getDrawable(this, R.drawable.ic_baseline_close_24)
 
                 } else {
-                    cardView.backgroundTintList = ContextCompat.getColorStateList(
-                        this,
-                        R.color.teal_200
-                    )
+                    cardView.backgroundTintList = ContextCompat.getColorStateList(this, R.color.teal_200)
                     imageView.background = ContextCompat.getDrawable(this, R.drawable.tick_icon)
                 }
 
@@ -216,6 +200,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    //this State listener is must because when the animation is happening i don't want to click the search btn, so i disable it and re-enable it
     private fun ObjectAnimator.addStateListener() {
         addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationStart(animation: Animator?) {
