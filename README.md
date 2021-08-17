@@ -12,4 +12,8 @@ MovieRama assesment using TMDB API
   <li>Lottie</li>
 	<li>Room</li>
 </ul>  
-
+<br>
+<b>Architecture</b>
+<ul>
+  <li>MVVM</li>
+</ul>  
