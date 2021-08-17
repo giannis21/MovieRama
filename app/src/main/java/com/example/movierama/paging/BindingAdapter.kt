@@ -29,7 +29,7 @@ import com.example.movierama.viewmodels.SharedViewModel
 import java.util.*
 
 
-object bindingAdapters {
+object BindingAdapter  {
 
 
     @BindingAdapter(value = ["updateSrc", "movieId"])
@@ -42,9 +42,7 @@ object bindingAdapters {
                 } ?: kotlin.run {
                     this.setImageResource(R.drawable.ic_baseline_favorite_border_24)
                 }
-
             }
-
         } catch (e: Exception) {
             println(e.message)
         }

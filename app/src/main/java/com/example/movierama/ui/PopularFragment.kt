@@ -7,16 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movierama.MainActivity
 import com.example.movierama.R
-import com.example.movierama.ShowsDataSource
-import com.example.movierama.databinding.FragmentDetailsBinding
 import com.example.movierama.databinding.PopularFragmentBinding
 import com.example.movierama.network.netMethods.isInternetAvailable
 import com.example.movierama.paging.PagedItemAdapter
+import com.example.movierama.utils.ApiCallState
 import com.example.movierama.viewmodels.SharedViewModel
 
 class PopularFragment : Fragment(), ItemHandler {
@@ -39,24 +39,20 @@ class PopularFragment : Fragment(), ItemHandler {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        itemHandler = this
 
         viewModel = (activity as MainActivity).viewModel
 
+
+        //setting up the recyclerview with the adapter
         manager = LinearLayoutManager(this.context)
         binding.recyclerviewPopular.layoutManager = manager
         binding.recyclerviewPopular.setHasFixedSize(true)
-        itemHandler = this
-
-
         adapter = PagedItemAdapter(requireContext(), itemHandler, viewModel = viewModel)
         binding.recyclerviewPopular.adapter = adapter
 
-        MainActivity.internetExceptionListener = {
-            binding.noInternetMessage.visibility = View.VISIBLE
-        }
-
-
         observeViewmodel()
+
         binding.swipeRefreshLayout.setOnRefreshListener {
             try {
                 viewModel.itemPagedList?.value?.dataSource?.invalidate()
@@ -80,17 +76,28 @@ class PopularFragment : Fragment(), ItemHandler {
         viewModel.itemPagedList?.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
-
-//                if (adapter.currentList?.size ?: 0 > 0)
-//                    binding.noInternetMessage.visibility = View.GONE
             }
         })
 
+        //i use Sealed class in order to decide if i show the noInternet layout Message.
+        // apiCallState variable is MutableLiveData which is passed into DataSource, where api calls is done
+        viewModel.apiCallState.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is ApiCallState.NoInternetErrorMessage -> {
+                    binding.noInternetMessage.visibility = View.VISIBLE
+                    binding.noInternetMessage.findViewById<TextView>(R.id.noconnection).text= it.data
+                }
+                is ApiCallState.Success -> {
+                    binding.noInternetMessage.visibility = View.GONE
+                }
+                else -> {}
+            }
 
-        viewModel.favorites.observe(
-            viewLifecycleOwner,
-            Observer { //when the favorites are updated i want to notify the adapter but not the first time
-                //that's why i check if favIsAdded is not null
+        })
+
+
+        viewModel.favorites.observe(viewLifecycleOwner, Observer { //when the favorites are updated i want to notify the adapter but not the first time
+                                                                   //that's why i check if favIsAdded is not null
 
                 viewModel.favIdDbChanged.value.let { movieId ->
 
@@ -101,29 +108,18 @@ class PopularFragment : Fragment(), ItemHandler {
 
 
                         if (viewModel.favIdAdded)
-                            (activity as MainActivity).showBanner(
-                                "the movie has been added to the favorites!",
-                                true
-                            )
+                            (activity as MainActivity).showBanner("the movie has been added to the favorites!", true)
                         else
-                            (activity as MainActivity).showBanner(
-                                "the movie has been removed from the favorites!",
-                                true
-                            )
+                            (activity as MainActivity).showBanner("the movie has been removed from the favorites!", true)
 
                     }
-
                 }
             })
     }
 
     override fun onClick(id: String) {
         if (isInternetAvailable(requireContext()))
-            findNavController().navigate(
-                PopularFragmentDirections.actionPopularFragmentToDetailsFragment(
-                    id
-                )
-            )
+            findNavController().navigate(PopularFragmentDirections.actionPopularFragmentToDetailsFragment(id))
         else
             (activity as MainActivity).showBanner("No internet connection!")
     }

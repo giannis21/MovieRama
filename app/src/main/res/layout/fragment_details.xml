@@ -47,7 +47,7 @@
                 android:id="@+id/firstContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:layout_margin="5dp"
                 android:backgroundTint="@color/black"
                 android:clickable="true"
                 android:focusable="true"
@@ -285,17 +285,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:background="@color/toolbar_color"
-                    android:drawableEnd="@drawable/arrow_up_details"
                     android:drawablePadding="4dp"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text="Reviews"
+                    android:text="@string/reviews"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="italic"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerview_similar" />
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerview_similar"
+                    app:drawableEndCompat="@drawable/arrow_up_details" />
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -354,6 +354,8 @@
                 android:id="@+id/customDialogLayout"
                 layout="@layout/error_dialog"
                 android:visibility="gone"
+                android:elevation="15dp"
+                android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
