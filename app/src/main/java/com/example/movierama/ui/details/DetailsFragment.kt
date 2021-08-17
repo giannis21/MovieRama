@@ -52,23 +52,13 @@ class DetailsFragment : Fragment() {
             if(binding.NestedScrollView.isGone){
                 binding.NestedScrollView.visibility=View.VISIBLE
 
-                binding.reviewsTitle.setCompoundDrawablesWithIntrinsicBounds(
-                    0,
-                    0,
-                    R.drawable.arrow_bottom_details,
-                    0
-                )
+                binding.reviewsTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_bottom_details, 0)
                 binding.ScrollView.post(Runnable { binding.ScrollView.fullScroll(ScrollView.FOCUS_DOWN) })
                 binding.reviewsTitle.text= getString(R.string.hide_reviews)
             }else{
                 binding.NestedScrollView.visibility=View.GONE
 
-                binding.reviewsTitle.setCompoundDrawablesWithIntrinsicBounds(
-                    0,
-                    0,
-                    R.drawable.arrow_up_details,
-                    0
-                )
+                binding.reviewsTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_up_details, 0)
                 binding.reviewsTitle.text= getString(R.string.show_reviews)
             }
         }
@@ -78,12 +68,11 @@ class DetailsFragment : Fragment() {
         }
 
 
-
     }
 
 
 
-    fun observeViewmodel() {
+    private fun observeViewmodel() {
 
         viewModel.currentDetailObj.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -136,6 +125,7 @@ class DetailsFragment : Fragment() {
         viewModel.error.observe(viewLifecycleOwner, Observer {
             if(it){
                 binding.customDialogLayout.visibility=View.VISIBLE
+                binding.firstContainer.visibility=View.INVISIBLE
                 binding.customDialogLayout.findViewById<Button>(R.id.dialog_okayBtn).setOnClickListener {
                     findNavController().navigateUp()
                 }
@@ -164,9 +154,7 @@ class DetailsFragment : Fragment() {
     fun goBack(){
         findNavController().navigateUp()
     }
-    fun setDialog() {
 
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

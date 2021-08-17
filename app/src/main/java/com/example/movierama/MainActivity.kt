@@ -36,10 +36,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModelFactory: ViewModelFactory
     private var searchcontainerOpened = false
 
-    companion object {
-        var internetExceptionListener: (() -> Unit)? = null
-    }
-
     lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,8 +47,7 @@ class MainActivity : AppCompatActivity() {
         setStatusBarColor()
 
 
-        val networkConnectionIncterceptor =
-            this.applicationContext?.let { NetworkConnectionIncterceptor(it) }
+        val networkConnectionIncterceptor = this.applicationContext?.let { NetworkConnectionIncterceptor(it) }
         val webService = ApiClient(networkConnectionIncterceptor!!)
         val repository = RemoteRepository(webService)
         viewModelFactory = ViewModelFactory(repository, this)
@@ -63,13 +58,7 @@ class MainActivity : AppCompatActivity() {
             if (currentFragment is PopularFragment)
                 currentFragment.updateSearch(text.toString())
         }
-        viewModel.favorites.observe(
-            this,
-            Observer { //when the favorites are updated i want to notify the adapter but not the first time
-                it.forEach {
-                    println("movie id ${it.id}")
-                }
-            })
+
         binding.searchImg.setOnClickListener {
             if (getCurrentFragment() is PopularFragment) {
                 if (searchcontainerOpened)
@@ -84,12 +73,6 @@ class MainActivity : AppCompatActivity() {
             val currentFragment = getCurrentFragment()
             if (currentFragment is DetailsFragment)
                 currentFragment.goBack()
-        }
-
-
-        internetExceptionListener = {
-            Toast.makeText(this, "no internet", Toast.LENGTH_SHORT).show()
-            showBanner("No Internet connection!")
         }
 
         val navHostFragment: NavHostFragment? = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?

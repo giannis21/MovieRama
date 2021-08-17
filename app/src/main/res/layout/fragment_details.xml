@@ -47,7 +47,7 @@
                 android:id="@+id/firstContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:layout_margin="5dp"
                 android:backgroundTint="@color/black"
                 android:clickable="true"
                 android:focusable="true"
@@ -354,6 +354,8 @@
                 android:id="@+id/customDialogLayout"
                 layout="@layout/error_dialog"
                 android:visibility="gone"
+                android:elevation="15dp"
+                android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"

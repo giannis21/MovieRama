@@ -7,7 +7,7 @@
     <string name="most_popular">Most Popular</string>
     <string name="search_movies">Search movies..</string>
     <string name="movie_detail">Movie details</string>
-    <string name="connectivity_problem_npull_down_to_refresh">Connectivity problem\npull down to refresh</string>
+    <string name="connectivity_problem_npull_down_to_refresh">Connectivity problems\npull down to refresh</string>
     <string name="show_reviews">Show reviews</string>
     <string name="hide_reviews">Hide reviews</string>
     <string name="oups_there_was_a_problem_with_the_api_call_try_again">Oups, there was a problem with the api call! Try again</string>

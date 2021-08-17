@@ -13,7 +13,7 @@ import com.example.movierama.data.movie.Movies
 import com.example.movierama.data.movie.MovieResult
 import com.example.movierama.data.movieDetail.Detail_Movie
 import com.example.movierama.data.reviews.Reviews
-import com.example.movierama.utils.NoInternetException
+import com.example.movierama.utils.ApiCallState
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import retrofit2.Response
@@ -25,7 +25,7 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
 
     var loading = MutableLiveData<Boolean>(false)
 
-    var noInternetException = MutableLiveData<Boolean>(false)
+    var apiCallState = MutableLiveData<ApiCallState>()
     var error = MutableLiveData<Boolean>(false)
     var favIdDbChanged = MutableLiveData<String?>(null)
     var favIdAdded: Boolean = false
@@ -36,10 +36,8 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
     var isFavoriteDetails = MutableLiveData<Boolean>(false)
     var showLoader = MutableLiveData<Boolean?>(null)
 
-    val exceptionHandler = CoroutineExceptionHandler { _, _ ->
-        // dialog.hideLoadingDialog()
-        //   noInternetException.postValue(true)
-        job.cancel()
+    val exceptionHandler = CoroutineExceptionHandler { _, e ->
+        println("Error ${e.message}")
     }
 
     var itemPagedList: LiveData<PagedList<MovieResult>>? = null
@@ -54,7 +52,7 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
     var local_repository: Local_repository
 
     init {
-        factory = DataSourceFactory(remoteRepository, context = context, isSearch = false)
+        factory = DataSourceFactory(remoteRepository, context = context, apiCallState = apiCallState)
         itemPagedList = LivePagedListBuilder<Int, MovieResult>(factory, config).build()
 
         val moviesDao = MovieRoomDatabase.getDatabase(context = context).movieDao()
@@ -68,19 +66,23 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
 
 
     fun getMovieDetails(id: String) {
-        showLoader.postValue(true)
+        showLoader.postValue(true)   //i show a generic loader until the api call finish
+
         viewModelScope.launch {
             getDetailsFlow(id)
-                .catch { e ->
-                    handleExceptions(e)
+                .catch {
+
+                    error.postValue(true)
                     showLoader.postValue(false)
+
                 }.flowOn(Dispatchers.IO)
                 .onCompletion {
-                    showLoader.postValue(false)
+                    showLoader.postValue(false)  //when the main details fetched from the api call i hide the dialog using the observer
                 }.collect {
+
                     if (it.isSuccessful) {
                         currentDetailObj.postValue(it.body())
-                        getOptionalInfo(id)
+                        getNonCriticalInfo(id)     //i get the non critical information once the main details api call is succesfull, otherwise it's meaningless
                     }else
                         error.postValue(true)
 
@@ -91,7 +93,7 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
     }
 
 
-    private suspend fun getOptionalInfo(id: String) {
+    private suspend fun getNonCriticalInfo(id: String) {
         viewModelScope.launch {
             launch(job) {
                 getSimilarFlow(id).catch { e ->
@@ -154,12 +156,7 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
         }
     }
 
-    private fun handleExceptions(e: Throwable) {
-        if (e is NoInternetException)
-            noInternetException.postValue(true)
-        else
-            error.postValue(true)
-    }
+
 
 
    /* private fun getSimilar(id: String) {
