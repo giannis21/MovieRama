@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movierama.MainActivity
+import com.example.movierama.MyApplication
 import com.example.movierama.R
 import com.example.movierama.databinding.FragmentDetailsBinding
 import com.example.movierama.viewmodels.SharedViewModel
@@ -162,4 +163,8 @@ class DetailsFragment : Fragment() {
         viewModel.error.value=false
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity?.application as MyApplication).appComponent.inject(this)
+    }
 }

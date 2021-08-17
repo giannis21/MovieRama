@@ -16,8 +16,6 @@ import retrofit2.http.*
 
 interface ApiClient {
 
-
-
     @GET("movie/popular")
     suspend fun getMostPopular(@Query("language") lang:String="en-US", @Query("page") page:String) : Response<Movies>
 
@@ -33,36 +31,5 @@ interface ApiClient {
 
     @GET("movie/{movie_id}/similar")
     suspend fun getSimilarMovies( @Path("movie_id") id:String,@Query("language") lang:String="en-US", @Query("page") page:String) : Response<Movies>
-
-    companion object {
-
-        operator fun invoke(networkConnectionIncterceptor: NetworkConnectionIncterceptor): ApiClient {
-            val interceptor = Interceptor { chain ->
-                val url = chain.request().url.newBuilder()
-                    .addQueryParameter("api_key", Constants.API_KEY).build()
-                val request = chain.request()
-                    .newBuilder()
-                    .url(url)
-                    .build()
-                chain.proceed(request)
-            }
-
-            val logging = HttpLoggingInterceptor()
-            logging.apply { logging.level = HttpLoggingInterceptor.Level.BODY }
-
-            val okHttpClient1 = OkHttpClient.Builder()
-                .addInterceptor(networkConnectionIncterceptor)
-                .addInterceptor(interceptor)
-                .addInterceptor(logging)
-
-            return Retrofit.Builder().client(okHttpClient1.build())
-                .baseUrl(Constants.BASEURL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(ApiClient::class.java)
-        }
-    }
-
-
 
 }

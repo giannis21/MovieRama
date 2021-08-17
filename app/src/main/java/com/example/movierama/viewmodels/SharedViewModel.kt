@@ -17,9 +17,10 @@ import com.example.movierama.utils.ApiCallState
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import retrofit2.Response
+import javax.inject.Inject
 
 
-class SharedViewModel(var remoteRepository: RemoteRepository, var context: Context) : ViewModel() {
+class SharedViewModel @Inject constructor(var remoteRepository: RemoteRepository,var localRepository: Local_repository, var context: Context) : ViewModel() {
 
     var job: Job = SupervisorJob()
 
@@ -49,15 +50,10 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
 
     var factory: DataSourceFactory
 
-    var local_repository: Local_repository
-
     init {
-        factory = DataSourceFactory(remoteRepository, context = context, apiCallState = apiCallState)
+        factory = DataSourceFactory(remoteRepository,context=context, apiCallState = apiCallState)
         itemPagedList = LivePagedListBuilder<Int, MovieResult>(factory, config).build()
-
-        val moviesDao = MovieRoomDatabase.getDatabase(context = context).movieDao()
-        local_repository = Local_repository(moviesDao)
-        favorites = local_repository.getFavorites()
+        favorites = localRepository.getFavorites()
     }
 
     fun searchTvShows(query: String) {
@@ -138,11 +134,11 @@ class SharedViewModel(var remoteRepository: RemoteRepository, var context: Conte
             runCatching {
 
                 favorites.value?.firstOrNull { it.id == id }?.let {
-                    local_repository.deleteFavorite(moviefav = MovieFav(id = id))
+                    localRepository.deleteFavorite(moviefav = MovieFav(id = id))
                     isFavoriteDetails.postValue(true)
                 } ?: kotlin.run {
                     inserted = true
-                    local_repository.addFavorite(moviefav = MovieFav(id = id))
+                    localRepository.addFavorite(moviefav = MovieFav(id = id))
                     isFavoriteDetails.postValue(false)
                 }
 

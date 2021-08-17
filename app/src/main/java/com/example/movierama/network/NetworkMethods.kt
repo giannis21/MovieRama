@@ -7,7 +7,7 @@ import android.os.Build
 import com.example.movierama.utils.NoInternetException
 
 
-object netMethods {
+object NetworkMethods {
 
     fun hasInternet(applicationContext: Context) {
 
@@ -16,7 +16,6 @@ object netMethods {
             }
 
     }
-
 
     fun isInternetAvailable(applicationContext: Context): Boolean {
         var result = false

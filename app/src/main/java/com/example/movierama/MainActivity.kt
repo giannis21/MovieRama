@@ -28,16 +28,25 @@ import com.example.movierama.ui.details.DetailsFragment
 import com.example.movierama.ui.PopularFragment
 import com.example.movierama.viewmodels.SharedViewModel
 import com.google.android.material.card.MaterialCardView
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var viewModel: SharedViewModel
-    private lateinit var viewModelFactory: ViewModelFactory
+ //   lateinit var viewModel: SharedViewModel
+   // private lateinit var viewModelFactory: ViewModelFactory
     private var searchcontainerOpened = false
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    val viewModel: SharedViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(SharedViewModel::class.java)
+    }
 
     lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as MyApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
@@ -47,11 +56,11 @@ class MainActivity : AppCompatActivity() {
         setStatusBarColor()
 
 
-        val networkConnectionIncterceptor = this.applicationContext?.let { NetworkConnectionIncterceptor(it) }
-        val webService = ApiClient(networkConnectionIncterceptor!!)
-        val repository = RemoteRepository(webService)
-        viewModelFactory = ViewModelFactory(repository, this)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(SharedViewModel::class.java)
+    //    val networkConnectionIncterceptor = this.applicationContext?.let { NetworkConnectionIncterceptor(it) }
+       // val webService = ApiClient(networkConnectionIncterceptor!!)
+      //  val repository = RemoteRepository(webService)
+      //  viewModelFactory = ViewModelFactory(repository, this)
+     //   viewModel = ViewModelProvider(this, viewModelFactory).get(SharedViewModel::class.java)
 
         binding.searchHereEdittext.doOnTextChanged { text, _, _, _ ->
             val currentFragment = getCurrentFragment()

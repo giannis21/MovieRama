@@ -1,5 +1,6 @@
 package com.example.movierama.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,9 +13,10 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movierama.MainActivity
+import com.example.movierama.MyApplication
 import com.example.movierama.R
 import com.example.movierama.databinding.PopularFragmentBinding
-import com.example.movierama.network.netMethods.isInternetAvailable
+import com.example.movierama.network.NetworkMethods.isInternetAvailable
 import com.example.movierama.paging.PagedItemAdapter
 import com.example.movierama.utils.ApiCallState
 import com.example.movierama.viewmodels.SharedViewModel
@@ -133,4 +135,9 @@ class PopularFragment : Fragment(), ItemHandler {
         viewModel.favIdDbChanged.value = null
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity?.application as MyApplication).appComponent.inject(this)
+
+    }
 }

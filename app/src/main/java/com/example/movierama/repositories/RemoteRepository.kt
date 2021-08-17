@@ -4,9 +4,10 @@ import com.example.movierama.data.movie.Movies
 import com.example.movierama.data.movieDetail.Detail_Movie
 import com.example.movierama.data.reviews.Reviews
 import retrofit2.Response
+import javax.inject.Inject
 
 
-class RemoteRepository(private val my_Api: ApiClient) {
+class RemoteRepository @Inject constructor(private val my_Api: ApiClient) {
 
 
     suspend fun searchTvShows(page:Int,query:String): Response<Movies> {

@@ -2,20 +2,23 @@ package com.example.movierama
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PageKeyedDataSource
 import com.example.movierama.data.movie.MovieResult
 import com.example.movierama.utils.ApiCallState
 import com.example.movierama.utils.NoInternetException
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
 class ShowsDataSource(
     var remoteRepository: RemoteRepository,
     var scope: CoroutineScope,
     var query: String,
-    var context: Context,
+    context: Context,
     var apiCallState:MutableLiveData<ApiCallState>
 ) :
     PageKeyedDataSource<Int, MovieResult>() {
+
 
    //only in initial api call i want to show the internet message layout, that's why i use different exception handler
     private val exceptionHandlerInitial = CoroutineExceptionHandler { _, e ->
