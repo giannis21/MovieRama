@@ -93,11 +93,14 @@ class DetailsFragment : Fragment() {
         })
 
         viewModel.isFavoriteDetails.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                binding.favorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-            } else {
-                binding.favorite.setImageResource(R.drawable.ic_baseline_favorite_24)
+            it?.let {
+                if (it) {
+                    binding.favorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                } else {
+                    binding.favorite.setImageResource(R.drawable.ic_baseline_favorite_24)
+                }
             }
+
         })
 
         viewModel.favorites.observe(viewLifecycleOwner, Observer { //when the favorites are updated i want to notify the adapter but not the first time

@@ -33,7 +33,7 @@ class SharedViewModel @Inject constructor(var remoteRepository: RemoteRepository
     var currentSimilarObj = MutableLiveData<Movies?>(null)
     var currentReviewsObj = MutableLiveData<Reviews?>(null)
     var favorites: LiveData<List<MovieFav>>
-    var isFavoriteDetails = MutableLiveData<Boolean>(false)
+    var isFavoriteDetails = MutableLiveData<Boolean?>(null)
     var showLoader = MutableLiveData<Boolean?>(null)
 
     private val exceptionHandler = CoroutineExceptionHandler { _, e ->

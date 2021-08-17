@@ -176,7 +176,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:background="@color/transparentGray"
+                    android:background="@color/transparentGray1"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     app:genres="@{movieDetails.genres}"
