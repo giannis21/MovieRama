@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.backBtn.setOnClickListener {
             val currentFragment = getCurrentFragment()
-            if (currentFragment is DetailsFragment)  //if i am currently in DetailsFragment the i can use its functions
+            if (currentFragment is DetailsFragment)  //if i am currently in DetailsFragment then i can use its functions
                 currentFragment.goBack()
         }
 
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
     private fun showGenericLoader() {
         val view: View = LayoutInflater.from(this).inflate(R.layout.generic_loader_layout, null)
         runOnUiThread {
-            binding.loaderFrameLayout.let { cLayout ->
+            binding.loaderFrameLayout?.let { cLayout ->
                 cLayout.addView(view, 0)
             }
         }
@@ -174,11 +174,7 @@ class MainActivity : AppCompatActivity() {
             }, 500)
 
 
-            ObjectAnimator.ofFloat(
-                binding.navHostFragment,
-                "translationY",
-                binding.textInputLayout.y + 8f
-            ).apply {
+            ObjectAnimator.ofFloat(binding.navHostFragment, "translationY", binding.textInputLayout.y + 8f).apply {
                 duration = 600
                 addStateListener()
                 start()

@@ -46,8 +46,8 @@ object BindingAdapter  {
         } catch (e: Exception) {
             println(e.message)
         }
-
     }
+
     //this function simply finds the length of the searched text and finds the index of this in the title so it applies another style from the index to index + length
     //in order for the user to see better the query in the title
     @BindingAdapter(value = ["spannableInSearch", "currentSearchName"])
@@ -85,7 +85,6 @@ object BindingAdapter  {
             val progressBar: ProgressBar? = (view.parent as? RelativeLayout)?.findViewById<ProgressBar>(R.id.progressBar)
 
             Glide.with(view.context).load("https://image.tmdb.org/t/p/w500/$url")
-                .error(Glide.with(view.context).load(R.drawable.no_results))
                 .apply(RequestOptions().transform(RoundedCorners(40)))
                 .skipMemoryCache(true)
                 .listener(object : RequestListener<Drawable> { //this listener telling me when the load finished succesfully or not, so i have to hide progressBar
@@ -99,7 +98,10 @@ object BindingAdapter  {
                         return false
                     }
 
-                }).into(view)
+                })
+                .error(Glide.with(view.context).load(R.drawable.no_results))
+                .into(view)
+
         }catch (e:Exception){
             println(e.message)
         }

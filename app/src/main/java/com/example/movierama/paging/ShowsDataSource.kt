@@ -24,6 +24,8 @@ class ShowsDataSource(
     private val exceptionHandlerInitial = CoroutineExceptionHandler { _, e ->
        if(e is NoInternetException)
           apiCallState.postValue(ApiCallState.NoInternetErrorMessage(context.getString(R.string.connectivity_problem_npull_down_to_refresh)))
+       else
+          apiCallState.postValue(ApiCallState.GeneralErrorMessage(context.getString(R.string.an_error_occured)))
     }
 
     private val exceptionHandler = CoroutineExceptionHandler { _, e ->
@@ -44,11 +46,15 @@ class ShowsDataSource(
                 else
                     remoteRepository.searchTvShows(FirstPage, query)
 
-                response.body()!!.results.let {
-                    apiCallState.postValue(ApiCallState.Success("data fetched succesfully!"))
-                    callback.onResult(it, null, (FirstPage + 1))
-
+                if(response.isSuccessful){
+                    response.body()!!.results.let {
+                        apiCallState.postValue(ApiCallState.Success("data fetched succesfully!"))
+                        callback.onResult(it, null, (FirstPage + 1))
+                    }
+                }else{
+                    apiCallState.postValue(ApiCallState.GeneralErrorMessage("Oups, an error occured! try again later."))
                 }
+
             }
 
     }

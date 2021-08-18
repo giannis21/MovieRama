@@ -14,6 +14,7 @@ import com.example.movierama.data.movie.MovieResult
 import com.example.movierama.data.movieDetail.Detail_Movie
 import com.example.movierama.data.reviews.Reviews
 import com.example.movierama.utils.ApiCallState
+import com.example.movierama.utils.SingleLiveEvent
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import retrofit2.Response
@@ -25,19 +26,25 @@ class SharedViewModel @Inject constructor(var remoteRepository: RemoteRepository
 
     var job: Job = SupervisorJob()
 
+    //the reason i use a custom class extending MutableLiveData is because after posting a value it posts null to value so i don't do that on my own in every single value
+    var error = SingleLiveEvent<Boolean?>()
+    var currentDetailObj = SingleLiveEvent<Detail_Movie?>()
+    var currentSimilarObj = SingleLiveEvent<Movies?>()
+    var currentReviewsObj = SingleLiveEvent<Reviews?>()
+
+
     var apiCallState = MutableLiveData<ApiCallState>()
-    var error = MutableLiveData<Boolean>(false)
-    var favIdDbChanged = MutableLiveData<String?>(null)
-    var favIdAdded: Boolean = false
-    var currentDetailObj = MutableLiveData<Detail_Movie?>(null)
-    var currentSimilarObj = MutableLiveData<Movies?>(null)
-    var currentReviewsObj = MutableLiveData<Reviews?>(null)
-    var favorites: LiveData<List<MovieFav>>
+    var favIdDbChanged = MutableLiveData<String>()
     var isFavoriteDetails = MutableLiveData<Boolean?>(null)
     var showLoader = MutableLiveData<Boolean?>(null)
 
+    var favIdAdded: Boolean = false
+
+    var favorites: LiveData<List<MovieFav>>
+
+
     private val exceptionHandler = CoroutineExceptionHandler { _, e ->
-        println("Error ${e.message}")
+        println(e.message)
     }
 
     var itemPagedList: LiveData<PagedList<MovieResult>>? = null
@@ -147,6 +154,8 @@ class SharedViewModel @Inject constructor(var remoteRepository: RemoteRepository
             }.onSuccess {
                 favIdAdded = inserted  //i use this boolean in order to decide what message to show with banner layout(if it is added or removed)
                 favIdDbChanged.postValue(id)
+            }.onFailure {
+              //  favIdDbChanged.postValue(null)
             }
         }
     }

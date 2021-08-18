@@ -13,4 +13,8 @@
     <string name="oups_there_was_a_problem_with_the_api_call_try_again">Oups, there was a problem with the api call! Try again</string>
     <string name="reviews">Reviews</string>
     <string name="okay">okay</string>
+    <string name="an_error_occured">Oups, an error occurred! try again later.</string>
+    <string name="collection">Collection</string>
+    <string name="similar_movies">Similar movies</string>
+    <string name="overview">Overview</string>
 </resources>

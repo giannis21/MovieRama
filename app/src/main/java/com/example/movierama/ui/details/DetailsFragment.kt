@@ -35,7 +35,7 @@ class DetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //viewModel=(activity as MainActivity).viewModel
+
         binding = FragmentDetailsBinding.inflate(inflater, container, false)
         binding.viewModel=viewModel
         binding.lifecycleOwner = this
@@ -126,17 +126,18 @@ class DetailsFragment : Fragment() {
 
         //if error is true i change the visibilty of the layout which forces the user to go back
         viewModel.error.observe(viewLifecycleOwner, Observer {
-            if(it){
-                binding.customDialogLayout.apply {
-                    visibility=View.VISIBLE
-                }
+            it?.let {
+                if(it){
+                    binding.customDialogLayout.apply {
+                        visibility=View.VISIBLE
+                    }
 
-                binding.firstContainer.visibility=View.INVISIBLE
-                binding.customDialogLayout.findViewById<Button>(R.id.dialog_okayBtn).setOnClickListener {
-                    findNavController().navigateUp()
+                    binding.firstContainer.visibility=View.INVISIBLE
+                    binding.customDialogLayout.findViewById<Button>(R.id.dialog_okayBtn).setOnClickListener {
+                        findNavController().navigateUp()
+                    }
                 }
             }
-            viewModel.error.postValue(false)
         })
 
         viewModel.currentSimilarObj.observe(viewLifecycleOwner, Observer {
@@ -158,6 +159,10 @@ class DetailsFragment : Fragment() {
         findNavController().navigateUp()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.showLoader.postValue(false)
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

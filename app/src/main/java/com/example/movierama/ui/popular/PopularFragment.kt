@@ -102,7 +102,11 @@ class PopularFragment : Fragment(), ItemHandler {
                 is ApiCallState.Success -> {
                     binding.noInternetMessage.visibility = View.GONE
                 }
-                else -> { }
+                is ApiCallState.GeneralErrorMessage -> {
+                    (activity as MainActivity).showBanner(it.data)
+                }
+                else -> {}
+
             }
         })
 
@@ -122,7 +126,7 @@ class PopularFragment : Fragment(), ItemHandler {
                         else
                             (activity as MainActivity).showBanner("the movie removed from the favorites!", true)
 
-                        viewModel.favIdDbChanged.value = null
+                        viewModel.favIdDbChanged.postValue(null)
                     }
                 }
             })
